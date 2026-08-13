@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.vercel/
+*.log
+
+# Metadados do Cursor (transcripts de chat e afins - NUNCA versionar)
+agent-tools/
+agent-transcripts/
+canvases/
+mcps/
+terminals/
+
+# Fotos brutas coladas no chat (originais do WhatsApp - nao usadas pelo app)
+assets/c__Users_*

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hiperautomação — Plano Executivo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0b1f33;
+      --soft: #2a3d50;
+      --muted: #6a7886;
+      --line: #d5dce4;
+      --bg: #efece5;
+      --card: #fffcf7;
+      --red: #b11226;
+      --ok: #1f6b4a;
+      --warn: #9a6b12;
+      --info: #1d4f7a;
+      --display: "Bricolage Grotesque", Georgia, serif;
+      --body: "Figtree", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: var(--body);
+      color: var(--ink);
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .app {
+      height: 100%;
+      display: grid;
+      grid-template-rows: 64px 1fr 40px;
+    }
+
+    .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 32px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,252,247,.92);
+    }
+    .brand {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -.02em;
+      white-space: nowrap;
+    }
+    .brand em { font-style: normal; color: var(--red); }
+    .tabs { display: flex; gap: 6px; }
+    .tabs button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: 700 .82rem/1 var(--body);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .tabs button.on { background: var(--ink); color: #fffcf7; }
+
+    main {
+      padding: 28px 40px 16px;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .slide {
+      display: none;
+      height: 100%;
+      animation: up .28s ease both;
+    }
+    .slide.on { display: flex; flex-direction: column; }
+    @keyframes up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: clamp(2.2rem, 3.4vw, 3.4rem);
+      letter-spacing: -.04em;
+      line-height: .98;
+      margin: 0 0 16px;
+    }
+    h2 {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      letter-spacing: -.03em;
+      margin: 0 0 18px;
+    }
+    .lead {
+      margin: 0;
+      color: var(--soft);
+      font-size: 1.15rem;
+      line-height: 1.4;
+      max-width: 52ch;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.45fr .9fr;
+      gap: 22px;
+      flex: 1;
+      min-height: 0;
+    }
+    .hero-left { display: flex; flex-direction: column; }
+    .ask {
+      background: var(--ink);
+      color: #fffcf7;
+      border-radius: 14px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .ask b {
+      display: block;
+      font-family: var(--display);
+      font-size: 1.35rem;
+      letter-spacing: -.02em;
+      margin-bottom: 12px;
+    }
+    .ask p { margin: 0; font-size: 1.05rem; line-height: 1.45; color: rgba(255,252,247,.9); }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 28px;
+    }
+    .kpi {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 16px;
+    }
+    .kpi strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 1.45rem;
+      letter-spacing: -.03em;
+      margin-bottom: 4px;
+    }
+    .kpi span { font-size: .8rem; color: var(--muted); font-weight: 700; }
+
+    .row { display: grid; gap: 10px; }
+    .item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+    .item h3 { margin: 0 0 4px; font-family: var(--display); font-size: 1.15rem; letter-spacing: -.02em; }
+    .item small { color: var(--muted); font-weight: 700; font-size: .85rem; }
+    .badge {
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: 7px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .doing { background: rgba(154,107,18,.14); color: var(--warn); }
+    .plan { background: rgba(29,79,122,.12); color: var(--info); }
+
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex: 1; min-height: 0; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+    .card h3 {
+      margin: 0 0 12px;
+      font-family: var(--display);
+      font-size: 1.15rem;
+      letter-spacing: -.02em;
+    }
+    .card ul { margin: 0; padding-left: 1.1rem; color: var(--soft); font-size: .98rem; }
+    .card li + li { margin-top: 8px; }
+    .note {
+      margin: 14px 0 0;
+      border-left: 3px solid var(--red);
+      padding-left: 12px;
+      font-size: .92rem;
+      color: var(--soft);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .flow div {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 10px;
+      font-size: .75rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--muted);
+    }
+    .flow b {
+      display: block;
+      font-family: var(--display);
+      font-size: 1.05rem;
+      color: var(--ink);
+      margin-top: 4px;
+    }
+
+    .team-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 16px;
+      flex: 1;
+      min-height: 0;
+    }
+    .roster {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: auto;
+    }
+    .person {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 12px;
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+    }
+    .person.on { background: var(--ink); border-color: var(--ink); color: #fffcf7; }
+    .person img {
+      width: 56px; height: 56px; object-fit: cover; border-radius: 8px; background: #e7e2d8;
+    }
+    .person strong {
+      display: block;
+      font-family: var(--display);
+      font-size: .9rem;
+      letter-spacing: -.02em;
+      line-height: 1.2;
+    }
+    .person span { display: block; font-size: .75rem; opacity: .75; margin-top: 3px; }
+
+    .profile {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 24px;
+      min-height: 0;
+      overflow: auto;
+    }
+    .profile > img {
+      width: 180px;
+      height: 210px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #e7e2d8;
+    }
+    .profile h3 {
+      margin: 0 0 4px;
+      font-family: var(--display);
+      font-size: 1.7rem;
+      letter-spacing: -.03em;
+    }
+    .role { color: var(--red); font-weight: 800; font-size: .95rem; margin-bottom: 12px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .meta i {
+      font-style: normal;
+      font-size: .78rem;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(11,31,51,.07);
+      color: var(--soft);
+    }
+    .bio { margin: 0 0 16px; color: var(--soft); font-size: 1rem; line-height: 1.45; }
+    .skills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill {
+      font-size: .78rem;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .skill.av { color: var(--ok); border-color: rgba(31,107,74,.35); background: rgba(31,107,74,.08); }
+    .skill.jr { color: var(--info); border-color: rgba(29,79,122,.3); background: rgba(29,79,122,.08); }
+
+    .phases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; flex: 1; min-height: 0; }
+    .phase {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px;
+    }
+    .phase .when {
+      color: var(--red);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .phase h3 { margin: 8px 0 14px; font-family: var(--display); font-size: 1.45rem; }
+    .phase ul { margin: 0; padding-left: 1.1rem; color: var(--soft); font-size: 1rem; }
+    .phase li + li { margin-top: 10px; }
+
+    .foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      border-top: 1px solid var(--line);
+      font-size: .78rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .hint { opacity: .75; }
+
+    @media (max-width: 1100px) {
+      body { overflow: auto; }
+      .app { height: auto; min-height: 100%; }
+      .hero, .split, .flow, .team-layout, .phases, .kpis, .profile { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr 1fr; }
+      main { overflow: auto; }
+      .profile > img { width: 100%; height: 240px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="bar">
+      <div class="brand">Hiperautomação <em>·</em> Plano executivo</div>
+      <nav class="tabs" id="tabs" aria-label="Seções"></nav>
+    </header>
+    <main id="main"></main>
+    <footer class="foot">
+      <span>Uso interno · Diretoria · Horizonte 12 meses</span>
+      <span class="hint">← → para navegar</span>
+    </footer>
+  </div>
+
+  <script>
+    const TEAM = [
+      {
+        name: "Igor Martins Minuncio",
+        short: "Igor Martins",
+        role: "Especialista",
+        tenure: "3 anos na empresa",
+        teamTenure: null,
+        photo: "assets/team/igor-martins-minuncio.png",
+        bio: "RPA Specialist | Enterprise Automation | IBM RPA | Power Automate | SQL Server | Python | Automation Governance. Âncora técnica: padrões, revisão, arquitetura e mentoria.",
+        skills: [
+          ["IBM RPA", "Avançado"], ["Power Automate", "Avançado"], ["BPMN", "Avançado"],
+          ["APIs / iPaaS", "Avançado"], ["IDP / IA", "Avançado"], ["SQL Server", "Avançado"],
+          ["Python", "Avançado"], ["Cloud", "Avançado"], ["Automation Governance", "Avançado"],
+        ],
+      },
+      {
+        name: "Levi Ribeiro Cury",
+        short: "Levi Ribeiro",
+        role: "Analista de Sistemas Jr.",
+        tenure: "10 meses na empresa",
+        teamTenure: null,
+        photo: "assets/team/levi-ribeiro-cury.png",
+        bio: "RPA Analyst | Enterprise Automation | IBM RPA | Power Automate | Python. Entrega sob padrão do CoE: discovery assistido, build e sustentação.",
+        skills: [
+          ["IBM RPA", "Júnior"], ["Power Automate", "Júnior"], ["BPMN", "Júnior"],
+          ["APIs / iPaaS", "Júnior"], ["IDP / IA", "Júnior"], ["SQL", "Júnior"],
+          ["Python", "Júnior"], ["Cloud", "Júnior"],
+        ],
+      },
+      {
+        name: "Daniel Eduardo Fernandes dos Santos",
+        short: "Daniel Eduardo",
+        role: "Analista Administrativo Pl.",
+        tenure: "4 anos e 4 meses na empresa",
+        teamTenure: "6 meses na equipe",
+        photo: "assets/team/daniel-eduardo-fernandes.png",
+        bio: "RPA Analyst | Power Automate | Python | SQL. Em capacitação na fábrica de automação, com base em processos administrativos e operação.",
+        skills: [
+          ["Power Automate", "Júnior"], ["Python", "Júnior"], ["APIs / iPaaS", "Júnior"],
+          ["IDP / IA", "Júnior"], ["SQL", "Júnior"], ["Cloud", "Júnior"],
+        ],
+      },
+      {
+        name: "Guilherme Bretanha Franco Fernandes",
+        short: "Guilherme Bretanha",
+        role: "Analista de Sistemas Jr.",
+        tenure: "2 anos e 2 meses na empresa",
+        teamTenure: "7 meses na equipe",
+        photo: "assets/team/guilherme-bretanha-fernandes.png",
+        bio: "RPA Analyst | Power Automate | Python | SQL. Entrega de automações com trilha em integrações, IDP/IA e cloud.",
+        skills: [
+          ["Power Automate", "Júnior"], ["Python", "Júnior"], ["APIs / iPaaS", "Júnior"],
+          ["IDP / IA", "Júnior"], ["SQL", "Júnior"], ["Cloud", "Júnior"],
+        ],
+      },
+      {
+        name: "João Crispim Moreira Neto",
+        short: "João Crispim",
+        role: "Analista de Sistemas Jr.",
+        tenure: "4 anos e 11 meses na empresa",
+        teamTenure: "1 mês na equipe",
+        photo: "assets/team/joao-crispim-moreira-neto.png",
+        bio: "RPA Analyst | Power Automate | Python | SQL | Jira DEV | N8N. Recém-integrado; trilha inicial sob mentoria.",
+        skills: [
+          ["Power Automate", "Júnior"], ["Python", "Júnior"], ["SQL", "Júnior"],
+          ["Jira DEV", "Júnior"], ["N8N", "Júnior"], ["APIs / iPaaS", "Júnior"],
+          ["IDP / IA", "Júnior"], ["Cloud", "Júnior"],
+        ],
+      },
+    ];
+
+    let active = 0;
+    let person = 0;
+
+    function skillClass(level) {
+      return level === "Avançado" ? "av" : "jr";
+    }
+
+    function slideAbertura() {
+      return `
+        <section class="slide on">
+          <div class="hero">
+            <div class="hero-left">
+              <h1>CoE de hiperautomação: valor mensurado, não fila de bots.</h1>
+              <p class="lead">Em 12 meses: funil priorizado, entrega com padrão, operação com SLA e time júnior evoluindo sob mentoria do especialista.</p>
+              <div class="kpis">
+                <div class="kpi"><strong>R$ / FTE</strong><span>Benefício realizado</span></div>
+                <div class="kpi"><strong>Dias</strong><span>Lead time → go-live</span></div>
+                <div class="kpi"><strong>%</strong><span>Automações no SLA</span></div>
+                <div class="kpi"><strong>%</strong><span>Reuso de componentes</span></div>
+              </div>
+            </div>
+            <aside class="ask">
+              <b>Pedido à diretoria</b>
+              <p>Patrocínio ao ritual de priorização com as áreas, acesso a dados para discovery e apoio à capacitação do time.</p>
+            </aside>
+          </div>
+        </section>`;
+    }
+
+    function slidePipeline() {
+      return `
+        <section class="slide on">
+          <h2>Pipeline — o que está em curso</h2>
+          <div class="row" style="margin-bottom:14px">
+            <article class="item">
+              <div><h3>DHC (Dux Hiperautomation em PRD)</h3><small>Data limite: 28/08/2026</small></div>
+              <span class="badge doing">Em andamento</span>
+            </article>
+            <article class="item">
+              <div><h3>Migração RPAs IBM → Python</h3><small>Data limite: 29/01/2027</small></div>
+              <span class="badge doing">Em andamento</span>
+            </article>
+            <article class="item">
+              <div><h3>Governança N8N</h3><small>Prazo a definir</small></div>
+              <span class="badge plan">Em planejamento</span>
+            </article>
+          </div>
+          <div class="split">
+            <article class="card">
+              <h3>Oportunidade catalogada</h3>
+              <ul>
+                <li><strong>Lançamentos de despesas — exportação Brasil</strong></li>
+                <li>Falta para go/no-go: volume, ROI, riscos e posições impactadas</li>
+              </ul>
+              <p class="note">Não entra em build até fechar discovery.</p>
+            </article>
+            <article class="card">
+              <h3>Backlog (priorizar)</h3>
+              <ul>
+                <li>Unificação de Arquivos PDF — SAP × Projuris</li>
+                <li>RPA de Comissão no Siscomex</li>
+                <li>Conciliação Financeira Automatizada — Sistema × Planilha</li>
+                <li>RPA — Cargos e Salários Benefícios, Unificação PDF SAP × Projuris</li>
+              </ul>
+            </article>
+          </div>
+        </section>`;
+    }
+
+    function slideModelo() {
+      return `
+        <section class="slide on">
+          <h2>Como operamos</h2>
+          <div class="flow">
+            <div>01<b>Demand</b></div>
+            <div>02<b>Triage</b></div>
+            <div>03<b>Discovery</b></div>
+            <div>04<b>Design</b></div>
+            <div>05<b>Build</b></div>
+            <div>06<b>Deploy</b></div>
+            <div>07<b>Run</b></div>
+          </div>
+          <div class="split">
+            <article class="card">
+              <h3>Regra do CoE</h3>
+              <ul>
+                <li>Priorização por valor (ROI, risco, volume, prontidão)</li>
+                <li>Especialista revisa builds críticos</li>
+                <li>Playbook + Definition of Done obrigatórios</li>
+                <li>Métodos: CoE + BPMN + Agile + ITSM</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>O que a área entrega</h3>
+              <ul>
+                <li>Portfólio com benefício rastreado</li>
+                <li>RPA / API / IDP / IA em produção</li>
+                <li>Governança, padrões e torre de controle</li>
+              </ul>
+            </article>
+          </div>
+        </section>`;
+    }
+
+    function slideTime() {
+      const p = TEAM[person];
+      return `
+        <section class="slide on">
+          <h2>Time técnico</h2>
+          <div class="team-layout">
+            <div class="roster" id="roster">
+              ${TEAM.map((t, i) => `
+                <button type="button" class="person ${i === person ? "on" : ""}" data-i="${i}">
+                  <img src="${t.photo}" alt="${t.name}" />
+                  <div>
+                    <strong>${t.short}</strong>
+                    <span>${t.role}</span>
+                  </div>
+                </button>`).join("")}
+            </div>
+            <article class="profile">
+              <img src="${p.photo}" alt="${p.name}" />
+              <div>
+                <h3>${p.name}</h3>
+                <div class="role">${p.role}</div>
+                <div class="meta">
+                  <i>${p.tenure}</i>
+                  ${p.teamTenure ? `<i>${p.teamTenure}</i>` : ""}
+                </div>
+                <p class="bio">${p.bio}</p>
+                <div class="skills">
+                  ${p.skills.map(([tool, level]) =>
+                    `<span class="skill ${skillClass(level)}">${tool} · ${level}</span>`
+                  ).join("")}
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>`;
+    }
+
+    function slideEvolucao() {
+      return `
+        <section class="slide on">
+          <h2>Evolução em 12 meses</h2>
+          <div class="phases">
+            <article class="phase">
+              <div class="when">0–90 dias</div>
+              <h3>Fundação</h3>
+              <ul>
+                <li>Rituais: intake, planning, demo e retro</li>
+                <li>Playbook mínimo (discovery, DoD, segurança)</li>
+                <li>Pairing júnior + especialista nos builds críticos</li>
+              </ul>
+            </article>
+            <article class="phase">
+              <div class="when">3–6 meses</div>
+              <h3>Produtividade</h3>
+              <ul>
+                <li>Ownership de 1–2 automações em produção por júnior</li>
+                <li>Biblioteca de componentes e framework de exceções</li>
+                <li>KPIs de lead time, reuso e falha</li>
+              </ul>
+            </article>
+            <article class="phase">
+              <div class="when">6–12 meses</div>
+              <h3>Escala</h3>
+              <ul>
+                <li>Tracks: Delivery, Ops, Discovery, AI/IDP</li>
+                <li>Promoção por evidência (júnior → pleno)</li>
+                <li>Mix de capacidade build vs. sustentação (70/30)</li>
+              </ul>
+            </article>
+          </div>
+        </section>`;
+    }
+
+    const SLIDES = [
+      { label: "1. Abertura", render: slideAbertura },
+      { label: "2. Pipeline", render: slidePipeline },
+      { label: "3. Modelo", render: slideModelo },
+      { label: "4. Time", render: slideTime },
+      { label: "5. 12 meses", render: slideEvolucao },
+    ];
+
+    const tabs = document.getElementById("tabs");
+    const main = document.getElementById("main");
+
+    function render() {
+      tabs.innerHTML = SLIDES.map((s, i) =>
+        `<button type="button" class="${i === active ? "on" : ""}" data-i="${i}">${s.label}</button>`
+      ).join("");
+      main.innerHTML = SLIDES[active].render();
+      tabs.querySelectorAll("button").forEach((b) => {
+        b.onclick = () => { active = Number(b.dataset.i); render(); };
+      });
+      const roster = document.getElementById("roster");
+      if (roster) {
+        roster.querySelectorAll("button").forEach((b) => {
+          b.onclick = () => { person = Number(b.dataset.i); render(); };
+        });
+      }
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === "PageDown") {
+        active = Math.min(SLIDES.length - 1, active + 1); render();
+      }
+      if (e.key === "ArrowLeft" || e.key === "PageUp") {
+        active = Math.max(0, active - 1); render();
+      }
+    });
+
+    render();
+  </script>
+</body>
+</html>

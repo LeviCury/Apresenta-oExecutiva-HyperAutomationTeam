@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plano Estratégico Executivo — Hiperautomação</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0b1f33;
+      --ink-soft: #24384d;
+      --muted: #5c6b7a;
+      --line: #d7dee6;
+      --paper: #f3f1ec;
+      --paper-2: #e8e4db;
+      --surface: #fffcf7;
+      --accent: #b11226;
+      --accent-deep: #7f0c1b;
+      --ok: #1f6b4a;
+      --warn: #9a6b12;
+      --info: #1d4f7a;
+      --radius: 10px;
+      --shadow: none;
+      --nav-h: 64px;
+      --font-display: "Bricolage Grotesque", Georgia, serif;
+      --font-body: "Figtree", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--ink);
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(177, 18, 38, 0.12), transparent 55%),
+        radial-gradient(700px 380px at 100% 0%, rgba(11, 31, 51, 0.10), transparent 50%),
+        linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .shell {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 20px 20px 72px;
+    }
+
+    /* Top bar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(10px);
+      background: rgba(243, 241, 236, 0.88);
+      border-bottom: 1px solid var(--line);
+      margin: -20px -20px 28px;
+      padding: 12px 20px;
+    }
+    .topbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: space-between;
+    }
+    .brand {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .brand span { color: var(--accent); }
+    .nav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav button {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font: 600 0.78rem/1 var(--font-body);
+      padding: 8px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: color .2s, background .2s, border-color .2s, transform .2s;
+    }
+    .nav button:hover { color: var(--ink); background: rgba(11, 31, 51, 0.05); }
+    .nav button.active {
+      color: var(--surface);
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 28px;
+      animation: rise .55s ease both;
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 0.98;
+      letter-spacing: -0.035em;
+      margin: 0 0 14px;
+    }
+    .lede {
+      font-size: 1.05rem;
+      line-height: 1.45;
+      color: var(--ink-soft);
+      max-width: 38ch;
+      margin: 0;
+    }
+    .ask {
+      background: var(--ink);
+      color: var(--surface);
+      padding: 22px 22px 20px;
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+      animation: rise .65s ease both .08s;
+    }
+    .ask::before {
+      content: "";
+      position: absolute;
+      inset: auto -20% -40% 40%;
+      height: 140px;
+      background: radial-gradient(circle, rgba(177,18,38,.45), transparent 70%);
+      pointer-events: none;
+    }
+    .ask h2 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      margin: 0 0 10px;
+      position: relative;
+    }
+    .ask p {
+      margin: 0;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: rgba(255,252,247,.88);
+      position: relative;
+    }
+
+    /* Panels */
+    .panel { display: none; animation: rise .4s ease both; }
+    .panel.active { display: block; }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      letter-spacing: -0.03em;
+      margin: 0;
+    }
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      max-width: 46ch;
+      text-align: right;
+    }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+    .tile {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .tile h3 {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      font-family: var(--font-display);
+      letter-spacing: -0.02em;
+    }
+    .tile p, .tile li {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+    .tile ul { margin: 0; padding-left: 1.1rem; }
+    .tile li + li { margin-top: 6px; }
+
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .stat strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+    .stat span { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
+
+    /* Stream */
+    .stream {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .step {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px 10px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s, transform .2s;
+      min-height: 118px;
+    }
+    .step:hover { transform: translateY(-2px); border-color: #b8c2cd; }
+    .step.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--surface);
+    }
+    .step .n {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .step.active .n { color: #f0a3ad; }
+    .step b {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+    .step small {
+      display: block;
+      font-size: 0.72rem;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+    .step.active small { color: rgba(255,252,247,.75); }
+    .step-detail {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      min-height: 56px;
+    }
+
+    /* Methods table-like */
+    .method {
+      display: grid;
+      grid-template-columns: 1.2fr 0.7fr 2fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.9rem;
+      align-items: start;
+    }
+    .method:first-child { border-top: 1px solid var(--line); }
+    .method b { font-family: var(--font-display); letter-spacing: -0.02em; }
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(11, 31, 51, 0.07);
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+
+    /* Timeline */
+    .phases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .phase {
+      text-align: left;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s, transform .2s;
+    }
+    .phase:hover { transform: translateY(-2px); }
+    .phase.active {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, #fff 0%, #fff5f5 100%);
+    }
+    .phase .when {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    .phase h3 {
+      margin: 0 0 10px;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+    }
+    .phase ul { margin: 0; padding-left: 1.05rem; color: var(--ink-soft); font-size: 0.85rem; }
+    .phase li + li { margin-top: 6px; }
+
+    /* Team */
+    .team-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 14px;
+      min-height: 420px;
+    }
+    .roster {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .person {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color .2s, background .2s, transform .2s;
+      font: inherit;
+      color: inherit;
+    }
+    .person:hover { transform: translateX(2px); }
+    .person.active {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--surface);
+    }
+    .person img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: var(--paper-2);
+    }
+    .person strong {
+      display: block;
+      font-size: 0.82rem;
+      font-family: var(--font-display);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .person span {
+      display: block;
+      font-size: 0.72rem;
+      opacity: 0.75;
+      margin-top: 2px;
+    }
+    .profile {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 20px;
+      align-content: start;
+    }
+    .profile > img {
+      width: 140px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 10px;
+      background: var(--paper-2);
+    }
+    .profile h3 {
+      margin: 0 0 4px;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+    .role-line {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .meta i {
+      font-style: normal;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(11,31,51,.07);
+      color: var(--ink-soft);
+    }
+    .profile .bio {
+      margin: 0 0 14px;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .skill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+    .skill.av { color: var(--ok); border-color: rgba(31,107,74,.35); background: rgba(31,107,74,.08); }
+    .skill.jr { color: var(--info); border-color: rgba(29,79,122,.3); background: rgba(29,79,122,.08); }
+
+    .footnote {
+      margin-top: 28px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .callout {
+      margin-top: 14px;
+      border-left: 3px solid var(--accent);
+      padding: 10px 0 10px 14px;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+
+    .subnav {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .subnav button {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--muted);
+      font: 600 0.78rem/1 var(--font-body);
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: color .2s, background .2s, border-color .2s;
+    }
+    .subnav button.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--surface);
+    }
+
+    .work-list { display: flex; flex-direction: column; gap: 8px; }
+    .work-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .work-item h3 {
+      margin: 0 0 6px;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+    .work-item p {
+      margin: 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .work-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      text-align: right;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 5px 9px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .badge.doing { background: rgba(154, 107, 18, 0.14); color: var(--warn); }
+    .badge.plan { background: rgba(29, 79, 122, 0.12); color: var(--info); }
+    .badge.gap { background: rgba(177, 18, 38, 0.1); color: var(--accent); }
+    .badge.backlog { background: rgba(11, 31, 51, 0.07); color: var(--ink-soft); }
+    .due {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+
+    .opp-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .opp-card h3 {
+      margin: 0 0 8px;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+    .opp-card .lead {
+      margin: 0 0 14px;
+      color: var(--ink-soft);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+    .gap-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .gap-grid .tile {
+      padding: 12px;
+    }
+    .gap-grid h4 {
+      margin: 0 0 4px;
+      font-size: 0.78rem;
+      font-family: var(--font-display);
+      letter-spacing: -0.01em;
+    }
+    .gap-grid p {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .backlog-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .backlog-item {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: start;
+    }
+    .backlog-item .idx {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.85rem;
+      color: var(--accent);
+      min-width: 1.5rem;
+    }
+    .backlog-item h3 {
+      margin: 0 0 4px;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+    .backlog-item p {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 920px) {
+      .hero, .team-layout, .stream, .phases, .grid-3, .grid-4, .grid-2, .method, .profile,
+      .gap-grid, .backlog-list, .work-item {
+        grid-template-columns: 1fr;
+      }
+      .work-meta { align-items: flex-start; text-align: left; }
+      .stream { grid-template-columns: repeat(2, 1fr); }
+      .section-head { flex-direction: column; align-items: start; }
+      .section-head p { text-align: left; }
+      .nav { display: none; }
+      .mobile-select { display: block; }
+      .profile > img { width: 100%; height: 220px; }
+    }
+    .mobile-select {
+      display: none;
+      width: 100%;
+      margin-top: 8px;
+      font: 600 0.9rem var(--font-body);
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">Hiperautomação <span>·</span> Plano Executivo</div>
+        <nav class="nav" id="nav" aria-label="Seções"></nav>
+        <select class="mobile-select" id="mobileNav" aria-label="Navegar seções"></select>
+      </div>
+    </div>
+
+    <header class="hero">
+      <div>
+        <div class="eyebrow">Apresentação à diretoria</div>
+        <h1>De pedidos de bot para um CoE que gera valor mensurado.</h1>
+        <p class="lede">
+          Mandato, modelo operacional, KPIs e evolução do time técnico em 12 meses — sem rodeio.
+        </p>
+      </div>
+      <aside class="ask">
+        <h2>Pedido à diretoria</h2>
+        <p>
+          Patrocínio ao ritual de priorização com as áreas, acesso a dados/process mining quando aplicável
+          e apoio à trilha de capacitação do time júnior sob mentoria do especialista.
+        </p>
+      </aside>
+    </header>
+
+    <main id="panels"></main>
+
+    <p class="footnote">
+      Documento executivo interno · Área de Hiperautomação · Horizonte 12 meses · Time técnico documentado (5 perfis)
+    </p>
+  </div>
+
+  <script>
+    const SECTIONS = [
+      { id: "briefing", label: "Briefing" },
+      { id: "operacao", label: "Operação" },
+      { id: "metodos", label: "Métodos" },
+      { id: "valor", label: "Valor & KPIs" },
+      { id: "pipeline", label: "Pipeline" },
+      { id: "evolucao", label: "Evolução" },
+      { id: "equipe", label: "Equipe" },
+    ];
+
+    const NEXT_STEPS = [
+      {
+        title: "Implementar DHC (Dux Hiperautomation em PRD)",
+        status: "Em andamento",
+        statusClass: "doing",
+        due: "28/08/2026",
+      },
+      {
+        title: "Migração dos RPAs em IBM para Python",
+        status: "Em andamento",
+        statusClass: "doing",
+        due: "29/01/2027",
+      },
+      {
+        title: "Implementar Governança N8N",
+        status: "Em planejamento",
+        statusClass: "plan",
+        due: null,
+      },
+    ];
+
+    const OPPORTUNITY = {
+      title: "Automatização da maioria dos processos de lançamentos de despesas — exportação Brasil",
+      lead: "Oportunidade catalogada. Discovery incompleto — sem go/no-go até fechar os gaps abaixo.",
+      gaps: [
+        ["Volume", "Retornar quantidade de lançamentos"],
+        ["ROI", "Quantificar benefício esperado"],
+        ["Riscos", "Mapear riscos à operação"],
+        ["Capacidade", "Posições impactadas / liberadas pela automação"],
+      ],
+    };
+
+    const BACKLOG = [
+      "Unificação de Arquivos PDF — Sistema SAP x Projuris",
+      "RPA de Comissão no Siscomex",
+      "Conciliação Financeira Automatizada — Sistema x Planilha",
+      "RPA — Cargos e Salários Benefícios, Unificação de Arquivos PDF Sistema SAP x Projuris",
+    ];
+
+    const STREAM = [
+      { n: "01", title: "Demand", text: "Intake com brief mínimo e sponsor de negócio." },
+      { n: "02", title: "Triage", text: "Score de valor: ROI, risco, volume, complexidade e prontidão." },
+      { n: "03", title: "Discovery", text: "Mapeamento, análise e business case go/no-go." },
+      { n: "04", title: "Design", text: "BPMN TO-BE, arquitetura, controles e segurança." },
+      { n: "05", title: "Build", text: "RPA / API / IDP / IA em sprints com peer review." },
+      { n: "06", title: "Deploy", text: "UAT, go-live controlado e hypercare 2–4 semanas." },
+      { n: "07", title: "Run", text: "SLA, monitoramento, melhorias e reuso de componentes." },
+    ];
+
+    const METHODS = [
+      ["CoE de Automação Inteligente", "Modelo", "Governança, padrões, priorização e escala (referência Gartner/Forrester)."],
+      ["Process Mining + Lean", "Discovery", "Escolher o que vale automatizar com evidência de volume e desperdício."],
+      ["BPMN + Design for Automation", "Desenho", "Padroniza AS-IS/TO-BE, regras e pontos de integração."],
+      ["Agile (Scrum/Kanban)", "Entrega", "Backlog por valor, sprints curtos e demos com negócio."],
+      ["DevOps leve", "Plataforma", "Versionamento, ambientes, monitoramento e rollback."],
+      ["ITSM + Hypercare", "Operação", "Catálogo, SLA, runbooks e melhoria contínua pós go-live."],
+    ];
+
+    const PHASES = [
+      {
+        when: "0–90 dias",
+        title: "Fundação",
+        items: [
+          "Rituais: intake, planning, demo e retro",
+          "Playbook mínimo (discovery, DoD, segurança)",
+          "Pairing júnior + especialista nos builds críticos",
+        ],
+      },
+      {
+        when: "3–6 meses",
+        title: "Produtividade",
+        items: [
+          "Ownership de 1–2 automações em produção por júnior",
+          "Biblioteca de componentes e framework de exceções",
+          "Certificações-alvo e KPIs de lead time / reuso / falha",
+        ],
+      },
+      {
+        when: "6–12 meses",
+        title: "Escala",
+        items: [
+          "Tracks: Delivery, Ops, Discovery, AI/IDP",
+          "Promoção por evidência (1–2 juniores → pleno)",
+          "Mix de capacidade build vs. sustentação (ex.: 70/30)",
+        ],
+      },
+    ];
+
+    const TEAM = [
+      {
+        name: "Igor Martins Minuncio",
+        role: "Especialista",
+        tenure: "3 anos na empresa",
+        teamTenure: null,
+        photo: "assets/team/igor-martins-minuncio.png",
+        bio: "RPA Specialist | Enterprise Automation | IBM RPA | Power Automate | SQL Server | Python | Automation Governance. Âncora técnica: padrões, revisão, arquitetura e mentoria.",
+        skills: [
+          ["IBM RPA", "Avançado"], ["Power Automate", "Avançado"], ["BPMN", "Avançado"],
+          ["APIs / iPaaS", "Avançado"], ["IDP / IA", "Avançado"], ["SQL Server", "Avançado"],
+          ["Python", "Avançado"], ["Cloud", "Avançado"], ["Automation Governance", "Avançado"],
+        ],
+      },
+      {
+        name: "Levi Ribeiro Cury",
+        role: "Analista de Sistemas Jr.",
+        tenure: "10 meses na empresa",
+        teamTenure: null,
+        photo: "assets/team/levi-ribeiro-cury.png",
+        bio: "RPA Analyst | Enterprise Automation | IBM RPA | Power Automate | Python. Entrega sob padrão do CoE: discovery assistido, build e sustentação.",
+        skills: [
+          ["IBM RPA", "Júnior"], ["Power Automate", "Júnior"], ["BPMN", "Júnior"],
+          ["APIs / iPaaS", "Júnior"], ["IDP / IA", "Júnior"], ["SQL", "Júnior"],
+          ["Python", "Júnior"], ["Cloud", "Júnior"],
+        ],
+      },
+      {
+        name: "Daniel Eduardo Fernandes dos Santos",
+        role: "Analista Administrativo Pl.",
+        tenure: "4 anos e 4 meses na empresa",
+        teamTenure: "6 meses na equipe",
+        photo: "assets/team/daniel-eduardo-fernandes.png",
+        bio: "RPA Analyst | Power Automate | Python | SQL. Em capacitação na fábrica de automação, com base em processos administrativos e operação.",
+        skills: [
+          ["Power Automate", "Júnior"], ["Python", "Júnior"], ["APIs / iPaaS", "Júnior"],
+          ["IDP / IA", "Júnior"], ["SQL", "Júnior"], ["Cloud", "Júnior"],
+        ],
+      },
+      {
+        name: "Guilherme Bretanha Franco Fernandes",
+        role: "Analista de Sistemas Jr.",
+        tenure: "2 anos e 2 meses na empresa",
+        teamTenure: "7 meses na equipe",
+        photo: "assets/team/guilherme-bretanha-fernandes.png",
+        bio: "RPA Analyst | Power Automate | Python | SQL. Entrega de automações com trilha em integrações, IDP/IA e cloud.",
+        skills: [
+          ["Power Automate", "Júnior"], ["Python", "Júnior"], ["APIs / iPaaS", "Júnior"],
+          ["IDP / IA", "Júnior"], ["SQL", "Júnior"], ["Cloud", "Júnior"],
+        ],
+      },
+      {
+        name: "João Crispim Moreira Neto",
+        role: "Analista de Sistemas Jr.",
+        tenure: "4 anos e 11 meses na empresa",
+        teamTenure: "1 mês na equipe",
+        photo: "assets/team/joao-crispim-moreira-neto.png",
+        bio: "RPA Analyst | Power Automate | Python | SQL | Jira DEV | N8N. Recém-integrado; trilha inicial sob mentoria.",
+        skills: [
+          ["Power Automate", "Júnior"], ["Python", "Júnior"], ["SQL", "Júnior"],
+          ["Jira DEV", "Júnior"], ["N8N", "Júnior"], ["APIs / iPaaS", "Júnior"],
+          ["IDP / IA", "Júnior"], ["Cloud", "Júnior"],
+        ],
+      },
+    ];
+
+    let activeSection = "briefing";
+    let activeStep = 0;
+    let activePhase = 0;
+    let activePerson = 0;
+    let activePipeline = "proximos";
+
+    const panels = document.getElementById("panels");
+    const nav = document.getElementById("nav");
+    const mobileNav = document.getElementById("mobileNav");
+
+    function skillClass(level) {
+      return level === "Avançado" ? "av" : "jr";
+    }
+
+    function renderNav() {
+      nav.innerHTML = SECTIONS.map((s) =>
+        `<button type="button" data-id="${s.id}" class="${s.id === activeSection ? "active" : ""}">${s.label}</button>`
+      ).join("");
+      mobileNav.innerHTML = SECTIONS.map((s) =>
+        `<option value="${s.id}" ${s.id === activeSection ? "selected" : ""}>${s.label}</option>`
+      ).join("");
+      nav.querySelectorAll("button").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeSection = btn.dataset.id;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      });
+      mobileNav.onchange = () => {
+        activeSection = mobileNav.value;
+        render();
+      };
+    }
+
+    function panelBriefing() {
+      return `
+        <section class="panel active" id="briefing">
+          <div class="section-head">
+            <h2>Briefing executivo</h2>
+            <p>Hiperautomação não é fábrica de bots. É industrializar melhoria de processos digitais com benefício rastreado.</p>
+          </div>
+          <div class="grid-3">
+            <article class="tile">
+              <h3>Mandato</h3>
+              <p>Descobrir oportunidades de alto valor, orquestrar RPA + integração + IDP + IA, operar com confiabilidade e provar ROI.</p>
+            </article>
+            <article class="tile">
+              <h3>Modelo alvo</h3>
+              <p>CoE enxuto: governança + entrega + operação em uma única value stream, do pedido ao benefício realizado.</p>
+            </article>
+            <article class="tile">
+              <h3>Realidade do time</h3>
+              <p>1 especialista âncora + analistas em capacitação. Escala depende de playbook, pairing e priorização por valor.</p>
+            </article>
+          </div>
+          <div class="callout">
+            <strong>Norte em 12 meses:</strong> sair do modo “atende pedido” e operar como CoE — funil priorizado, padrão industrial de entrega e SLA de produção.
+          </div>
+        </section>`;
+    }
+
+    function panelOperacao() {
+      return `
+        <section class="panel active" id="operacao">
+          <div class="section-head">
+            <h2>Como o time atua</h2>
+            <p>Clique em cada etapa da value stream. Builds críticos passam por review do especialista.</p>
+          </div>
+          <div class="stream" id="stream">
+            ${STREAM.map((s, i) => `
+              <button type="button" class="step ${i === activeStep ? "active" : ""}" data-i="${i}">
+                <div class="n">${s.n}</div>
+                <b>${s.title}</b>
+                <small>${s.text}</small>
+              </button>`).join("")}
+          </div>
+          <div class="step-detail" id="stepDetail"><strong>${STREAM[activeStep].title}:</strong> ${STREAM[activeStep].text}</div>
+          <div class="grid-3" style="margin-top:14px">
+            <article class="tile"><h3>Especialista</h3><p>Arquitetura, padrões, revisão e mentoria — multiplicador da capacidade júnior.</p></article>
+            <article class="tile"><h3>Analistas</h3><p>Discovery assistido, build sob padrão, testes, documentação e sustentação L1/L2.</p></article>
+            <article class="tile"><h3>Regra de ouro</h3><p>Sem improvisar em produção: playbook, Definition of Done e pairing obrigatório nos casos críticos.</p></article>
+          </div>
+        </section>`;
+    }
+
+    function panelMetodos() {
+      return `
+        <section class="panel active" id="metodos">
+          <div class="section-head">
+            <h2>Metodologias de mercado</h2>
+            <p>Combinação madura de CoE — implantar por camadas, não tudo de uma vez.</p>
+          </div>
+          <div>
+            ${METHODS.map(([name, layer, why]) => `
+              <div class="method">
+                <b>${name}</b>
+                <div><span class="tag">${layer}</span></div>
+                <div style="color:var(--ink-soft)">${why}</div>
+              </div>`).join("")}
+          </div>
+        </section>`;
+    }
+
+    function panelValor() {
+      return `
+        <section class="panel active" id="valor">
+          <div class="section-head">
+            <h2>O que a área entrega</h2>
+            <p>Quatro frentes. Diretoria acompanha pelos KPIs abaixo.</p>
+          </div>
+          <div class="grid-2" style="margin-bottom:14px">
+            <article class="tile"><h3>Portfólio e valor</h3><ul><li>Funil priorizado</li><li>Business case e benefício realizado</li><li>Roadmap trimestral</li></ul></article>
+            <article class="tile"><h3>Soluções</h3><ul><li>RPA, iPaaS/API, IDP e IA</li><li>Componentes reutilizáveis</li><li>Integrações com sistemas core</li></ul></article>
+            <article class="tile"><h3>Governança</h3><ul><li>Padrões e documentação</li><li>Controles, auditoria e compliance</li><li>Definition of Done</li></ul></article>
+            <article class="tile"><h3>Operação</h3><ul><li>Torre de controle</li><li>Catálogo e SLAs</li><li>Enablement com guarda-chuva do CoE</li></ul></article>
+          </div>
+          <div class="grid-4">
+            <div class="stat"><strong>R$ / FTE</strong><span>Benefício anualizado realizado</span></div>
+            <div class="stat"><strong>Dias</strong><span>Lead time priorização → go-live</span></div>
+            <div class="stat"><strong>%</strong><span>Automações saudáveis (SLA)</span></div>
+            <div class="stat"><strong>%</strong><span>Reuso de componentes</span></div>
+          </div>
+        </section>`;
+    }
+
+    function panelPipeline() {
+      const tabs = [
+        ["proximos", "Próximos passos"],
+        ["oportunidade", "Oportunidade"],
+        ["backlog", "Backlog"],
+      ];
+
+      let body = "";
+      if (activePipeline === "proximos") {
+        body = `
+          <div class="work-list">
+            ${NEXT_STEPS.map((w) => `
+              <article class="work-item">
+                <div>
+                  <h3>${w.title}</h3>
+                  <p>${w.due ? "Iniciativa prioritária com data limite definida." : "Iniciativa em planejamento — prazo a definir."}</p>
+                </div>
+                <div class="work-meta">
+                  <span class="badge ${w.statusClass}">${w.status}</span>
+                  ${w.due ? `<span class="due">Limite: ${w.due}</span>` : `<span class="due">Sem data limite</span>`}
+                </div>
+              </article>`).join("")}
+          </div>`;
+      } else if (activePipeline === "oportunidade") {
+        body = `
+          <article class="opp-card">
+            <div style="margin-bottom:10px"><span class="badge gap">Catalogada · gaps abertos</span></div>
+            <h3>${OPPORTUNITY.title}</h3>
+            <p class="lead">${OPPORTUNITY.lead}</p>
+            <div class="gap-grid">
+              ${OPPORTUNITY.gaps.map(([h, t]) => `
+                <div class="tile">
+                  <h4>${h}</h4>
+                  <p>${t}</p>
+                </div>`).join("")}
+            </div>
+            <div class="callout">
+              <strong>Próxima ação:</strong> fechar volume, ROI, riscos e impacto de posições antes de priorizar no funil de entrega.
+            </div>
+          </article>`;
+      } else {
+        body = `
+          <div class="backlog-list">
+            ${BACKLOG.map((item, i) => `
+              <article class="backlog-item">
+                <div class="idx">${String(i + 1).padStart(2, "0")}</div>
+                <div>
+                  <h3>${item}</h3>
+                  <p><span class="badge backlog">Backlog</span></p>
+                </div>
+              </article>`).join("")}
+          </div>
+          <div class="callout">
+            Itens aguardando priorização no triage do CoE (score de valor, complexidade e prontidão).
+          </div>`;
+      }
+
+      return `
+        <section class="panel active" id="pipeline">
+          <div class="section-head">
+            <h2>Pipeline de trabalho</h2>
+            <p>Próximos passos, oportunidade catalogada e backlog de projetos.</p>
+          </div>
+          <div class="subnav" id="pipelineTabs">
+            ${tabs.map(([id, label]) => `
+              <button type="button" data-id="${id}" class="${id === activePipeline ? "active" : ""}">${label}</button>`
+            ).join("")}
+          </div>
+          ${body}
+        </section>`;
+    }
+
+    function panelEvolucao() {
+      return `
+        <section class="panel active" id="evolucao">
+          <div class="section-head">
+            <h2>Evolução da equipe — 12 meses</h2>
+            <p>Trilha T-shaped, mentoria estruturada e promoção por evidência.</p>
+          </div>
+          <div class="phases" id="phases">
+            ${PHASES.map((p, i) => `
+              <button type="button" class="phase ${i === activePhase ? "active" : ""}" data-i="${i}">
+                <div class="when">${p.when}</div>
+                <h3>${p.title}</h3>
+                <ul>${p.items.map((it) => `<li>${it}</li>`).join("")}</ul>
+              </button>`).join("")}
+          </div>
+        </section>`;
+    }
+
+    function panelEquipe() {
+      const p = TEAM[activePerson];
+      return `
+        <section class="panel active" id="equipe">
+          <div class="section-head">
+            <h2>Time técnico</h2>
+            <p>Selecione o colaborador para ver tempo de casa e nível por ferramenta.</p>
+          </div>
+          <div class="team-layout">
+            <div class="roster" id="roster">
+              ${TEAM.map((t, i) => `
+                <button type="button" class="person ${i === activePerson ? "active" : ""}" data-i="${i}">
+                  <img src="${t.photo}" alt="${t.name}" />
+                  <div>
+                    <strong>${t.name.split(" ").slice(0, 2).join(" ")}</strong>
+                    <span>${t.role}</span>
+                  </div>
+                </button>`).join("")}
+            </div>
+            <article class="profile">
+              <img src="${p.photo}" alt="${p.name}" />
+              <div>
+                <h3>${p.name}</h3>
+                <div class="role-line">${p.role}</div>
+                <div class="meta">
+                  <i>${p.tenure}</i>
+                  ${p.teamTenure ? `<i>${p.teamTenure}</i>` : ""}
+                </div>
+                <p class="bio">${p.bio}</p>
+                <div class="skills">
+                  ${p.skills.map(([tool, level]) =>
+                    `<span class="skill ${skillClass(level)}">${tool} · ${level}</span>`
+                  ).join("")}
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>`;
+    }
+
+    const renderers = {
+      briefing: panelBriefing,
+      operacao: panelOperacao,
+      metodos: panelMetodos,
+      valor: panelValor,
+      pipeline: panelPipeline,
+      evolucao: panelEvolucao,
+      equipe: panelEquipe,
+    };
+
+    function bindPanelEvents() {
+      const stream = document.getElementById("stream");
+      if (stream) {
+        stream.querySelectorAll(".step").forEach((el) => {
+          el.addEventListener("click", () => {
+            activeStep = Number(el.dataset.i);
+            render();
+          });
+        });
+      }
+      const phases = document.getElementById("phases");
+      if (phases) {
+        phases.querySelectorAll(".phase").forEach((el) => {
+          el.addEventListener("click", () => {
+            activePhase = Number(el.dataset.i);
+            render();
+          });
+        });
+      }
+      const roster = document.getElementById("roster");
+      if (roster) {
+        roster.querySelectorAll(".person").forEach((el) => {
+          el.addEventListener("click", () => {
+            activePerson = Number(el.dataset.i);
+            render();
+          });
+        });
+      }
+      const pipelineTabs = document.getElementById("pipelineTabs");
+      if (pipelineTabs) {
+        pipelineTabs.querySelectorAll("button").forEach((el) => {
+          el.addEventListener("click", () => {
+            activePipeline = el.dataset.id;
+            render();
+          });
+        });
+      }
+    }
+
+    function render() {
+      renderNav();
+      panels.innerHTML = renderers[activeSection]();
+      bindPanelEvents();
+    }
+
+    render();
+  </script>
+</body>
+</html>
