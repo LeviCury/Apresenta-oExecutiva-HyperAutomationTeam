@@ -155,7 +155,7 @@ function GlowCard({ children, className = "", icon, style }) {
   );
 }
 
-function AnimatedNumber({ value }) {
+function AnimatedNumber({ value, decimals = 0 }) {
   const reducedMotion = useReducedMotion();
   const [display, setDisplay] = useState(reducedMotion ? value : 0);
 
@@ -172,15 +172,23 @@ function AnimatedNumber({ value }) {
     const tick = (now) => {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - (1 - progress) ** 3;
-      setDisplay(Math.round(value * eased));
+      const precision = 10 ** decimals;
+      setDisplay(Math.round(value * eased * precision) / precision);
       if (progress < 1) frame = requestAnimationFrame(tick);
     };
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [reducedMotion, value]);
+  }, [decimals, reducedMotion, value]);
 
-  return <>{display}</>;
+  return (
+    <>
+      {display.toLocaleString("pt-BR", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      })}
+    </>
+  );
 }
 
 function IntroSlide() {
@@ -227,8 +235,9 @@ function IntroSlide() {
             >
               <h3>Onde queremos chegar</h3>
               <p>
-                Funil priorizado, entrega industrial, operação com SLA e time
-                júnior evoluindo sob mentoria — em 12 meses.
+                Time de referência em automação e encontrar oportunidades de
+                forma proativa. Verificar uma pessoa para catalogar
+                oportunidades em áreas estratégicas.
               </p>
             </GlowCard>
           </div>
@@ -306,28 +315,104 @@ function IntroSlide() {
   );
 }
 
-const kpis = [
-  { value: 107, label: "RPAs / automações ativas", icon: Bot },
+const operationKpis = [
   {
-    value: 4,
-    label: "Ferramentas: Python (DHC), IBM, Power Automate, N8N",
-    icon: Code2,
+    value: 26522,
+    label: "Total de execuções",
+    delta: "↑ 94,4%",
+    tone: "positive",
+    icon: BarChart3,
   },
-  { value: 35, label: "Média de chamados / mês", icon: Gauge },
-  { value: 5, label: "Áreas no domínio atual", icon: Building2 },
+  {
+    value: 24712,
+    label: "Sucessos",
+    delta: "↑ 99,1%",
+    tone: "positive",
+    icon: Target,
+  },
+  {
+    value: 1440,
+    label: "Falhas",
+    delta: "↑ 56,5%",
+    tone: "negative",
+    icon: Gauge,
+  },
+  {
+    value: 93.2,
+    decimals: 1,
+    suffix: "%",
+    label: "Taxa de sucesso",
+    delta: "↑ 2,2%",
+    tone: "positive",
+    icon: Zap,
+  },
+];
+
+const topAutomations = [
+  {
+    name: "Faturamento de Nota Fiscal de Exportação",
+    executions: 5752,
+  },
+  {
+    name: "Emissão CSN — Python",
+    executions: 5230,
+  },
+  {
+    name: "Enviar NF para SEFAZ",
+    executions: 2004,
+  },
+  {
+    name: "RPA Fat. Couro Verde (TO, GO, MT)",
+    executions: 1918,
+  },
+  {
+    name: "RPA Fat. Couro Verde (SP, MG)",
+    executions: 1910,
+  },
 ];
 
 function NumbersSlide() {
+  const highestExecutionCount = topAutomations[0].executions;
+
   return (
     <div className="slide-content numbers-slide">
-      <header className="slide-heading compact reveal">
-        <h2>Números da operação</h2>
+      <header className="slide-heading compact numbers-heading reveal">
+        <div>
+          <h2>Números da operação</h2>
+          <p className="slide-subtitle">
+            Últimos 30 dias · atualização do dashboard às 17:38
+          </p>
+        </div>
+        <span className="operation-live">
+          <i aria-hidden="true" />
+          Operação agora
+        </span>
       </header>
 
-      <div className="kpi-grid">
-        {kpis.map(({ value, label, icon: Icon }, index) => (
+      <div
+        className="operation-status reveal"
+        style={{ "--delay": "45ms" }}
+        aria-label="Situação atual da operação"
+      >
+        <span className="is-running">
+          <b>Executando</b> 3
+        </span>
+        <span>
+          <b>Na fila</b> 0
+        </span>
+        <span>
+          <b>Máquinas online</b> 3 de 3 · 3 ocupadas
+        </span>
+      </div>
+
+      <div className="kpi-grid operation-kpi-grid">
+        {operationKpis.map(
+          (
+            { value, decimals = 0, suffix = "", label, delta, tone, icon: Icon },
+            index,
+          ) => (
           <article
-            className="kpi reveal"
+            className={`kpi operation-kpi operation-kpi--${tone} reveal`}
             style={{ "--delay": `${70 + index * 45}ms` }}
             key={label}
           >
@@ -337,78 +422,153 @@ function NumbersSlide() {
               <span className="pulse-dot" />
             </div>
             <strong>
-              <AnimatedNumber value={value} />
+              <AnimatedNumber value={value} decimals={decimals} />
+              {suffix}
             </strong>
             <span>{label}</span>
+            <small>{delta}</small>
           </article>
-        ))}
+          ),
+        )}
       </div>
 
-      <div className="executive-grid">
+      <div className="operation-detail-grid">
         <GlowCard
-          className="info-card reveal"
-          icon={<Building2 size={19} strokeWidth={1.8} />}
+          className="trend-card reveal"
           style={{ "--delay": "250ms" }}
         >
-          <h3>Áreas atendidas</h3>
-          <ul>
-            <li>
-              <strong>MBS</strong> — Faturamento, Documentação, Despesas sobre
-              fretes, Despesas de exportação, Cabine Fiscal, Gente e Gestão
-            </li>
-            <li>
-              Financeiro · Estoque · Jurídico · Diretoria Executiva
-            </li>
-          </ul>
-          <div className="abstract-map" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
-            <i />
+          <div className="data-card-heading">
+            <div>
+              <h3>Execuções por dia</h3>
+              <p>Volume total e sucessos ao longo do período</p>
+            </div>
+            <span>30 dias</span>
+          </div>
+          <div
+            className="execution-trend"
+            role="img"
+            aria-label="Tendência de execuções diárias nos últimos 30 dias, conforme o dashboard enviado."
+          >
+            <div className="chart-y-axis" aria-hidden="true">
+              <span>1.600</span>
+              <span>1.200</span>
+              <span>800</span>
+              <span>400</span>
+              <span>0</span>
+            </div>
+            <svg viewBox="0 0 720 220" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="execution-area" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#48b99f" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="#48b99f" stopOpacity="0.02" />
+                </linearGradient>
+              </defs>
+              <g className="trend-grid">
+                <line x1="0" x2="720" y1="12" y2="12" />
+                <line x1="0" x2="720" y1="64" y2="64" />
+                <line x1="0" x2="720" y1="116" y2="116" />
+                <line x1="0" x2="720" y1="168" y2="168" />
+                <line x1="0" x2="720" y1="219" y2="219" />
+              </g>
+              <path
+                className="trend-area"
+                d="M0 193 C24 188 38 182 62 184 S92 179 116 183 S150 181 174 191 S206 187 228 170 S248 105 276 98 S322 103 346 112 S378 127 400 91 S432 75 458 72 S486 38 510 45 S544 63 568 52 S596 50 620 42 S655 41 678 48 S705 80 720 103 L720 220 L0 220 Z"
+              />
+              <motion.path
+                className="trend-line trend-line--total"
+                d="M0 191 C24 186 38 180 62 182 S92 177 116 181 S150 179 174 189 S206 185 228 168 S248 101 276 95 S322 100 346 109 S378 124 400 88 S432 72 458 69 S486 35 510 42 S544 60 568 49 S596 47 620 39 S655 38 678 45 S705 77 720 100"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ delay: 0.45, duration: 1.15, ease }}
+              />
+              <motion.path
+                className="trend-line trend-line--success"
+                d="M0 195 C24 190 38 185 62 187 S92 182 116 186 S150 184 174 194 S206 190 228 173 S248 108 276 101 S322 106 346 115 S378 130 400 94 S432 78 458 75 S486 42 510 49 S544 67 568 56 S596 54 620 46 S655 45 678 52 S705 84 720 107"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ delay: 0.55, duration: 1.15, ease }}
+              />
+            </svg>
+            <div className="chart-x-axis" aria-hidden="true">
+              <span>19/07</span>
+              <span>25/07</span>
+              <span>31/07</span>
+              <span>05/08</span>
+              <span>10/08</span>
+              <span>17/08</span>
+            </div>
+          </div>
+          <div className="trend-legend">
+            <span><i className="is-total" /> Total</span>
+            <span><i className="is-success" /> Sucessos</span>
           </div>
         </GlowCard>
 
         <GlowCard
-          className="info-card reveal"
-          icon={<Workflow size={19} strokeWidth={1.8} />}
+          className="top-robots-card reveal"
           style={{ "--delay": "300ms" }}
         >
-          <h3>Stack e movimento</h3>
-          <ul>
-            <li>Python (DHC) · IBM · Power Automate · N8N (recente)</li>
-            <li>3 iniciativas: DHC em PRD, IBM → Python, governança N8N</li>
-            <li>4 projetos em backlog aguardando triage</li>
-          </ul>
-          <p className="note">Migração IBM → Python até 29/01/2027.</p>
-        </GlowCard>
-
-        <GlowCard
-          className="info-card reveal"
-          icon={<BarChart3 size={19} strokeWidth={1.8} />}
-          style={{ "--delay": "350ms" }}
-        >
-          <h3>Leitura executiva</h3>
-          <ul>
-            <li>
-              107 ativos com ~35 chamados/mês: operação estável, não saturada
-            </li>
-            <li>
-              Cobertura ainda concentrada — o crescimento está fora do domínio
-              atual
-            </li>
-            <li>
-              Próximo número a abrir: catálogo das áreas ainda sem automação
-            </li>
-          </ul>
-          <div className="mini-chart" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
-            <i />
+          <div className="data-card-heading">
+            <div>
+              <h3>Top robôs por execuções</h3>
+              <p>Quebra mensal por processo</p>
+            </div>
+            <BarChart3 size={18} strokeWidth={1.8} aria-hidden="true" />
+          </div>
+          <div className="robots-ranking">
+            {topAutomations.map((automation, index) => (
+              <div className="robot-rank" key={automation.name}>
+                <span className="robot-rank__position">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div className="robot-rank__data">
+                  <div>
+                    <strong title={automation.name}>{automation.name}</strong>
+                    <b>{automation.executions.toLocaleString("pt-BR")}</b>
+                  </div>
+                  <span className="robot-rank__track" aria-hidden="true">
+                    <motion.i
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{
+                        delay: 0.5 + index * 0.08,
+                        duration: 0.72,
+                        ease,
+                      }}
+                      style={{
+                        width: `${(automation.executions / highestExecutionCount) * 100}%`,
+                      }}
+                    />
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </GlowCard>
+
+        <div className="operation-insights reveal" style={{ "--delay": "350ms" }}>
+          <GlowCard className="performance-card">
+            <span className="eyebrow">Próxima leitura</span>
+            <h3>Execuções RPA × humano</h3>
+            <p>
+              Comparar economia de tempo e performance por processo, área e
+              tecnologia.
+            </p>
+            <div className="performance-tags" aria-label="Indicadores planejados">
+              <span>Tempo economizado</span>
+              <span>Performance</span>
+            </div>
+          </GlowCard>
+          <GlowCard className="portfolio-card">
+            <span className="eyebrow">Escala atual</span>
+            <h3>Portfólio em operação</h3>
+            <div className="portfolio-metrics">
+              <span><strong>107</strong> automações ativas</span>
+              <span><strong>5</strong> áreas atendidas</span>
+              <span><strong>4</strong> tecnologias</span>
+            </div>
+          </GlowCard>
+        </div>
       </div>
     </div>
   );
@@ -602,7 +762,7 @@ function PlanSlide() {
   return (
     <div className="slide-content plan-slide">
       <header className="slide-heading compact reveal">
-        <h2>Plano de trabalho — em curso, oportunidade e backlog</h2>
+        <h2>Plano de trabalho — marcos e entrega por tempo</h2>
       </header>
 
       <div className="initiatives">
@@ -641,16 +801,18 @@ function PlanSlide() {
           <h3>Oportunidade catalogada</h3>
           <ul>
             <li>
-              <strong>Lançamentos de despesas — exportação Brasil.</strong>{" "}
-              Automatizar a maioria dos processos. Falta para go/no-go: volume
-              de lançamentos, ROI, riscos à operação e posições impactadas.
+              <strong>Gente e Gestão.</strong> Lista de processos manuais em
+              contratação. Sonia (gerente executiva).
             </li>
             <li>
-              <strong>Expandir domínio.</strong> Catalogar as áreas que ainda
-              não estão sob automação — só então priorizar por valor.
+              <strong>Próximo passo.</strong> Fechar catálogo, volume, tempo
+              manual e potencial de automação para priorização por valor.
             </li>
           </ul>
-          <p className="note">Não entra em build até fechar discovery.</p>
+          <p className="note">
+            Marco de discovery: transformar a lista em oportunidades
+            priorizadas e mensuráveis.
+          </p>
         </GlowCard>
 
         <section
