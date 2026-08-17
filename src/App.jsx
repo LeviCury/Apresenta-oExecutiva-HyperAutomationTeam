@@ -808,11 +808,21 @@ function PlanSlide() {
               <strong>Próximo passo.</strong> Fechar catálogo, volume, tempo
               manual e potencial de automação para priorização por valor.
             </li>
+            <li>
+              <strong>Marco de discovery:</strong> transformar a lista em
+              oportunidades priorizadas e mensuráveis.
+            </li>
+            <li>
+              <strong>Lançamentos de despesas — exportação Brasil.</strong>{" "}
+              Automatizar a maioria dos processos. Falta para go/no-go: volume
+              de lançamentos, ROI, riscos à operação e posições impactadas.
+            </li>
+            <li>
+              <strong>Expandir domínio.</strong> Catalogar as áreas que ainda
+              não estão sob automação — só então priorizar por valor.
+            </li>
           </ul>
-          <p className="note">
-            Marco de discovery: transformar a lista em oportunidades
-            priorizadas e mensuráveis.
-          </p>
+          <p className="note">Não entra em build até fechar discovery.</p>
         </GlowCard>
 
         <section
