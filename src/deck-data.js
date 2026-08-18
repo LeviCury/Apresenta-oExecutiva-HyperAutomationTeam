@@ -69,30 +69,34 @@ export const topAutomations = [
 
 export const teamMoves = [
   {
-    title: "Igor Martins Minuncio",
-    decision: "Contratação interna · Tech Lead formal do CoE",
-  },
-  {
-    title: "Levi Ribeiro Cury",
-    decision: "Promoção para Analista Pl. Full Stack",
+    title: "Skills que o CoE precisa",
     description:
-      "Entregas no DHC e Executive Reports, ampliando a orquestração de RPAs Python e a visibilidade executiva.",
+      "Python pleno, governança N8N, ops/sustentação, discovery com ROI, IDP/IA com validação — hoje concentradas no especialista.",
   },
   {
-    title: "João Crispim Moreira Neto",
-    decision: "Promoção por tempo de empresa e frentes atuadas",
+    title: "Não contratar mais júnior agora",
     description:
-      "Deploy de objetos de banco/Delphi e atuação na migração IBM → Python (DHC).",
+      "4 juniores + 1 especialista. Gargalo é mentoria e review, não headcount júnior.",
   },
   {
-    title: "Daniel Eduardo Fernandes dos Santos",
-    decision: "Validação das entregas",
-    description: "Atuação na migração IBM → Python (DHC).",
+    title: "Contratar 1 Analista Pleno (Python/RPA)",
+    description:
+      "Destravar a migração IBM → Python e aliviar o especialista para arquitetura e padrões.",
   },
   {
-    title: "Guilherme Bretanha Franco Fernandes",
-    decision: "Validação das entregas",
-    description: "Atuação na migração IBM → Python (DHC).",
+    title: "Promover 1 júnior → pleno (6–12 meses)",
+    description:
+      "Candidato natural: Levi, por stack IBM/Python. Evidência: ownership em PRD + qualidade.",
+  },
+  {
+    title: "Alinhar cargo do Daniel",
+    description:
+      "Analista Administrativo Pl. no CoE. Converter para trilha de sistemas/automação ou formalizar papel de process analyst.",
+  },
+  {
+    title: "Tracks internos",
+    description:
+      "João: N8N/governança. Guilherme: delivery. Igor: Tech Lead formal do CoE.",
   },
 ];
 

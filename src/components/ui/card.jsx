@@ -55,7 +55,10 @@ function CardDescription({ className, ...props }) {
   return (
     <p
       data-slot="card-description"
-      className={cn("text-sm leading-6 text-[#426a88]", className)}
+      className={cn(
+        "text-sm leading-6 text-[#426a88] 2xl:text-base 2xl:leading-7",
+        className,
+      )}
       {...props}
     />
   );

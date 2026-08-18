@@ -75,7 +75,7 @@ function DeliveryChart() {
             RPAs entregam o equivalente a{" "}
             {formatDecimal(roiMetrics.total.analysts)} analistas
           </h3>
-          <p className="mt-1 max-w-[680px] text-[10px] leading-4 text-[#426a88]">
+          <p className="mt-1 max-w-[680px] text-[13px] leading-5 text-[#426a88] 2xl:text-[15px] 2xl:leading-6">
             Trabalho automatizado em julho convertido pela premissa de 140
             horas úteis por analista/mês.
           </p>
@@ -86,7 +86,7 @@ function DeliveryChart() {
       </div>
 
       <div className="mt-5">
-        <div className="mb-2 flex justify-between text-[9px] font-semibold text-[#5d86a5]">
+        <div className="mb-2 flex justify-between text-[11px] font-semibold text-[#426a88] 2xl:text-xs">
           {[0, 20, 40, 60].map((tick) => (
             <span key={tick}>{tick}</span>
           ))}
@@ -111,12 +111,12 @@ function DeliveryChart() {
             transition={{ delay: 0.45, duration: 1.05, ease: EASE }}
             style={{ width: `calc(${barWidth}% - 8px)` }}
           >
-            <span className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#2c5372] px-3 py-1 font-display text-base font-bold tracking-[-0.04em] text-white shadow-[0_5px_18px_rgba(44,83,114,.35)] ring-2 ring-white/90">
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#2c5372] px-3 py-1 font-display text-lg font-bold tracking-[-0.04em] text-white shadow-[0_5px_18px_rgba(44,83,114,.35)] ring-2 ring-white/90">
               ~{formatDecimal(roiMetrics.total.analysts)}
             </span>
           </motion.div>
         </div>
-        <div className="mt-2 flex justify-end text-[9px] font-semibold uppercase tracking-[0.12em] text-[#5d86a5]">
+        <div className="mt-2 flex justify-end text-[11px] font-semibold uppercase tracking-[0.1em] text-[#426a88] 2xl:text-xs">
           Equivalência em analistas · 140 h/mês
         </div>
       </div>
@@ -137,7 +137,7 @@ function ConclusionPanel() {
         strokeWidth={1.3}
       />
       <div className="relative">
-        <span className="text-[9px] font-bold uppercase tracking-[0.17em] text-white/60">
+        <span className="text-[11px] font-bold uppercase tracking-[0.15em] text-white/72 2xl:text-xs">
           Conclusão executiva
         </span>
         <div className="mt-2 flex items-end gap-2">
@@ -148,20 +148,20 @@ function ConclusionPanel() {
               prefix="~"
             />
           </strong>
-          <span className="max-w-20 pb-0.5 text-[9px] font-semibold leading-3 text-white/70">
+          <span className="max-w-24 pb-0.5 text-xs font-semibold leading-4 text-white/82">
             analistas equivalentes
           </span>
         </div>
       </div>
       <div className="relative mt-4 border-t border-white/15 pt-3 sm:mt-0 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">
-        <p className="text-xs leading-5 text-white/82">
+        <p className="text-sm leading-5 text-white/88 2xl:text-base 2xl:leading-6">
           Em julho, os RPAs entregaram um volume de trabalho equivalente a{" "}
           <strong className="text-white">
             ~{formatDecimal(roiMetrics.total.analysts)} analistas
           </strong>
           , considerando 140 horas úteis por mês.
         </p>
-        <p className="mt-1.5 text-[9px] leading-4 text-white/58">
+        <p className="mt-1.5 text-[11px] leading-4 text-white/70 2xl:text-[13px] 2xl:leading-5">
           Equivalência consolidada de DCPOA, CSN/CSI, Faturamento NF de
           Exportação e Faturamento Couro Verde.
         </p>
@@ -191,10 +191,10 @@ function EvidenceCard({ item, index }) {
       />
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <span className="text-[8px] font-bold uppercase tracking-[0.14em] text-[#5d86a5]">
+          <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#426a88] 2xl:text-xs">
             Evidência {String(index + 1).padStart(2, "0")}
           </span>
-          <h3 className="mt-0.5 font-display text-sm font-semibold leading-4 tracking-[-0.03em] text-[#2c5372]">
+          <h3 className="mt-0.5 font-display text-base font-semibold leading-5 tracking-[-0.03em] text-[#2c5372] 2xl:text-lg">
             {item.title}
           </h3>
         </div>
@@ -205,27 +205,27 @@ function EvidenceCard({ item, index }) {
 
       <div className="mt-2.5 grid grid-cols-[minmax(0,1.55fr)_.7fr_.7fr] gap-2">
         <div className="min-w-0 rounded-xl bg-[#eaeff5]/65 px-2.5 py-2">
-          <strong className="font-display block truncate text-sm tracking-[-0.03em] text-[#2c5372]">
+          <strong className="font-display block truncate text-base tracking-[-0.03em] text-[#2c5372]">
             {item.volume}
           </strong>
-          <span className="block truncate text-[8px] text-[#5d86a5]">
+          <span className="block truncate text-[11px] text-[#426a88] 2xl:text-xs">
             {item.complement}
           </span>
         </div>
         <div className="rounded-xl bg-[#eaeff5]/65 px-2.5 py-2">
           <Clock3 className="mb-0.5 size-2.5 text-[#5d86a5]" />
-          <strong className="font-display block text-xs text-[#2c5372]">
+          <strong className="font-display block text-sm text-[#2c5372]">
             {item.hours.toLocaleString("pt-BR")} h
           </strong>
         </div>
         <div className="rounded-xl bg-[#eaeff5]/65 px-2.5 py-2">
           <CheckCircle2 className="mb-0.5 size-2.5 text-[#426a88]" />
-          <strong className="font-display block text-xs text-[#2c5372]">
+          <strong className="font-display block text-sm text-[#2c5372]">
             {item.analysts.toLocaleString("pt-BR")} FTE
           </strong>
         </div>
       </div>
-      <p className="mt-2 text-[8px] leading-3 text-[#5d86a5]">
+      <p className="mt-2 text-[11px] leading-4 text-[#426a88] 2xl:text-xs 2xl:leading-[1.45]">
         {item.premise} · {item.details}
       </p>
     </motion.article>
@@ -234,7 +234,7 @@ function EvidenceCard({ item, index }) {
 
 export default function RoiScene() {
   return (
-    <Scene contentClassName="gap-4">
+    <Scene contentClassName="gap-3.5">
       <SceneHeading
         eyebrow="03 · Retorno comprovado"
         title={
@@ -282,7 +282,7 @@ export default function RoiScene() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.72, duration: 0.45 }}
-        className="flex flex-col gap-2 border-t border-[#2c5372]/[.08] pt-3 text-[9px] leading-4 text-[#5d86a5] sm:flex-row sm:items-center sm:justify-between"
+        className="flex flex-col gap-2 border-t border-[#2c5372]/[.08] pt-2.5 text-[11px] leading-4 text-[#426a88] sm:flex-row sm:items-center sm:justify-between 2xl:text-xs"
       >
         <span>
           Base consolidada de julho/2026 · DCPOA por execução real · CSN/CSI

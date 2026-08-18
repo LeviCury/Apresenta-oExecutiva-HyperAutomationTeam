@@ -111,7 +111,9 @@ export function AnimatedNumber({
 export function SceneHeading({
   eyebrow,
   title,
+  titleClassName,
   description,
+  descriptionClassName,
   aside,
   dark = false,
   className,
@@ -122,20 +124,21 @@ export function SceneHeading({
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.56, ease: EASE }}
       className={cn(
-        "flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between",
+        "flex flex-col gap-2.5 lg:flex-row lg:items-end lg:justify-between",
         className,
       )}
     >
-      <div className="max-w-[980px]">
+      <div className="max-w-[1040px]">
         {eyebrow ? (
-          <Badge variant={dark ? "dark" : "default"} className="mb-3">
+          <Badge variant={dark ? "dark" : "default"} className="mb-2">
             {eyebrow}
           </Badge>
         ) : null}
         <h1
           className={cn(
-            "font-display text-[clamp(2rem,3.3vw,4.15rem)] font-semibold leading-[.98] tracking-[-0.065em]",
+            "font-display text-[clamp(1.75rem,2.55vw,3.2rem)] font-semibold leading-[1] tracking-[-0.055em]",
             dark ? "text-white" : "text-[#2c5372]",
+            titleClassName,
           )}
         >
           {title}
@@ -143,8 +146,9 @@ export function SceneHeading({
         {description ? (
           <p
             className={cn(
-              "mt-3 max-w-[850px] text-[clamp(.88rem,1.1vw,1.1rem)] leading-7",
-              dark ? "text-white/58" : "text-[#426a88]",
+              "mt-2 max-w-[900px] text-[clamp(.9rem,.95vw,1.02rem)] leading-6",
+              dark ? "text-white/75" : "text-[#426a88]",
+              descriptionClassName,
             )}
           >
             {description}
@@ -159,14 +163,13 @@ export function SceneHeading({
 export function Scene({
   children,
   dark = false,
-  alignScaledLeft = false,
+  fitKey,
   className,
   contentClassName,
 }) {
   const viewportRef = useRef(null);
   const contentRef = useRef(null);
   const [scale, setScale] = useState(1);
-  const [isCompactViewport, setIsCompactViewport] = useState(false);
 
   useLayoutEffect(() => {
     const viewport = viewportRef.current;
@@ -179,7 +182,6 @@ export function Scene({
       frame = window.requestAnimationFrame(() => {
         const availableWidth = viewport.clientWidth;
         const availableHeight = viewport.clientHeight;
-        setIsCompactViewport(availableWidth < 1200);
         const previousStyles = {
           left: content.style.left,
           width: content.style.width,
@@ -189,7 +191,7 @@ export function Scene({
 
         content.style.left = "0";
         content.style.width = "100%";
-        content.style.maxWidth = "1580px";
+        content.style.maxWidth = "1880px";
         content.style.transform = "none";
 
         const contentWidth = content.scrollWidth;
@@ -204,8 +206,9 @@ export function Scene({
           return;
         }
 
+        // Amplia até 1.3x quando sobra espaço, para maximizar a legibilidade em TV.
         const targetScale = Math.min(
-          1,
+          1.3,
           (availableWidth - 2) / contentWidth,
           (availableHeight - 2) / contentHeight,
         );
@@ -229,7 +232,7 @@ export function Scene({
       window.removeEventListener("resize", measure);
       window.removeEventListener("load", measure);
     };
-  }, []);
+  }, [fitKey]);
 
   return (
     <div
@@ -268,25 +271,16 @@ export function Scene({
       <div
         ref={contentRef}
         style={{
-          left:
-            alignScaledLeft && isCompactViewport && scale < 0.999
-              ? `${(1 - scale) * 50}%`
-              : alignScaledLeft && scale < 0.999
-                ? "0"
-                : `${(100 - 100 / scale) / 2}%`,
-          width:
-            alignScaledLeft && isCompactViewport && scale < 0.999
-              ? "100%"
-              : `${100 / scale}%`,
-          maxWidth: scale < 0.999 ? "none" : undefined,
-          marginLeft: scale < 0.999 ? "0" : undefined,
-          marginRight: scale < 0.999 ? "0" : undefined,
+          left: `${(100 - 100 / scale) / 2}%`,
+          width: `${100 / scale}%`,
+          maxWidth: Math.abs(scale - 1) > 0.001 ? "none" : undefined,
+          marginLeft: Math.abs(scale - 1) > 0.001 ? "0" : undefined,
+          marginRight: Math.abs(scale - 1) > 0.001 ? "0" : undefined,
           transform: `scale(${scale})`,
-          transformOrigin:
-            alignScaledLeft && scale < 0.999 ? "top left" : "top center",
+          transformOrigin: "top center",
         }}
         className={cn(
-          "scene-fit-content relative mx-auto flex min-h-full w-full max-w-[1580px] flex-col px-5 py-5 sm:px-8 sm:py-7 lg:px-12 lg:py-8 2xl:px-16",
+          "scene-fit-content relative mx-auto flex min-h-full w-full max-w-[1880px] flex-col px-5 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-6 2xl:px-12",
           contentClassName,
         )}
       >
@@ -316,7 +310,7 @@ export function MetricCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5, ease: EASE }}
       className={cn(
-        "min-h-[118px] p-5",
+        "min-h-[112px] p-5",
         dark &&
           "border-white/10 bg-white/[.055] text-white shadow-[0_22px_60px_rgba(0,0,0,.18)]",
         tone === "negative" &&
@@ -336,7 +330,7 @@ export function MetricCard({
     >
       <div
         className={cn(
-          "mb-3 flex items-center justify-between",
+          "mb-2.5 flex items-center justify-between",
           dark ? "text-white/50" : "text-[#5d86a5]",
         )}
       >
@@ -364,7 +358,7 @@ export function MetricCard({
       <div className="mt-2 flex items-center justify-between gap-3">
         <span
           className={cn(
-            "text-xs font-semibold",
+            "text-[13px] font-semibold 2xl:text-sm",
             dark ? "text-white/58" : "text-[#426a88]",
           )}
         >
@@ -373,7 +367,7 @@ export function MetricCard({
         {delta ? (
           <small
             className={cn(
-              "whitespace-nowrap text-[10px] font-bold",
+              "whitespace-nowrap text-[11px] font-bold 2xl:text-xs",
               tone === "negative"
                 ? "text-[#e83948]"
                 : dark
@@ -393,8 +387,8 @@ export function SectionLabel({ children, dark = false, className }) {
   return (
     <div
       className={cn(
-        "mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em]",
-        dark ? "text-white/50" : "text-[#5d86a5]",
+        "mb-2 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] 2xl:text-xs",
+        dark ? "text-white/75" : "text-[#426a88]",
         className,
       )}
     >

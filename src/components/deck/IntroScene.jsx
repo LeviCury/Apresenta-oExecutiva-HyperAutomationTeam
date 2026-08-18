@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "motion/react";
 import {
   BriefcaseBusiness,
@@ -9,6 +10,7 @@ import {
   Zap,
 } from "lucide-react";
 import { Badge } from "../ui/badge";
+import { cn } from "../../lib/utils";
 import {
   CardContent,
   CardDescription,
@@ -50,17 +52,21 @@ const process = [
 ];
 
 export default function IntroScene() {
+  const [compactPanel, setCompactPanel] = useState("direction");
+
   return (
-    <Scene contentClassName="gap-4">
+    <Scene fitKey={compactPanel} contentClassName="gap-3.5">
       <SceneHeading
         eyebrow="01 · Direção"
         title={
           <>
-            De time que atende pedidos para CoE que{" "}
-            <span className="text-[#e83948]">escolhe valor.</span>
+            De atender pedidos a{" "}
+            <span className="text-[#e83948]">escolher valor.</span>
           </>
         }
-        description="Propósito, missão e onde chegamos em 12 meses — com a oportunidade de escala ainda aberta na companhia."
+        titleClassName="text-[clamp(1.4rem,1.7vw,2.1rem)]"
+        description="Propósito, missão e direção para 12 meses — com a escala ainda aberta na companhia."
+        descriptionClassName="mt-1 text-[15px]"
         aside={
           <div className="hidden items-center gap-3 rounded-full border border-[#2c5372]/10 bg-white/80 px-4 py-2.5 text-xs font-semibold text-[#426a88] shadow-sm backdrop-blur-md lg:flex">
             <span className="size-1.5 animate-pulse-soft rounded-full bg-[#e83948]" />
@@ -69,31 +75,70 @@ export default function IntroScene() {
         }
       />
 
-      <div className="grid flex-1 gap-4 lg:grid-cols-[minmax(0,1fr)_280px] xl:grid-cols-[minmax(0,1fr)_340px]">
-        <div className="flex min-w-0 flex-col gap-4">
-          <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-3 gap-2 rounded-2xl border border-[#2c5372]/[.08] bg-white/85 p-1.5 shadow-sm 2xl:hidden">
+        {[
+          ["direction", "Direção"],
+          ["scale", "Escala e decisão"],
+          ["model", "Modelo operacional"],
+        ].map(([value, label]) => (
+          <button
+            key={value}
+            type="button"
+            onClick={() => setCompactPanel(value)}
+            className={cn(
+              "rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors",
+              compactPanel === value
+                ? "bg-[#2c5372] text-white"
+                : "text-[#426a88] hover:bg-[#eaeff5]",
+            )}
+            aria-pressed={compactPanel === value}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div className="grid flex-1 gap-4 2xl:grid-cols-[minmax(0,1fr)_400px]">
+        <div
+          className={cn(
+            "flex min-w-0 flex-col gap-4",
+            compactPanel === "model" && "hidden 2xl:flex",
+          )}
+        >
+          <div
+            className={cn(
+              "grid gap-4 md:grid-cols-3",
+              compactPanel !== "direction" && "hidden 2xl:grid",
+            )}
+          >
             {pillars.map(({ title, copy, icon: Icon }, index) => (
               <MotionCard
                 key={title}
                 initial={{ opacity: 0, y: 22 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.08 + index * 0.07, duration: 0.5, ease: EASE }}
-                className="min-h-[156px]"
               >
                 <CardHeader className="p-5 pb-2">
                   <div className="mb-1 flex size-9 items-center justify-center rounded-xl border border-[#e83948]/15 bg-[#e83948]/10 text-[#bf404f]">
                     <Icon className="size-[18px]" strokeWidth={1.8} />
                   </div>
-                  <CardTitle className="text-lg">{title}</CardTitle>
+                  <CardTitle className="text-xl 2xl:text-2xl">{title}</CardTitle>
                 </CardHeader>
                 <CardContent className="px-5 pb-5">
-                  <CardDescription>{copy}</CardDescription>
+                  <CardDescription className="text-base leading-7 text-[#2c5372]/90 2xl:text-lg 2xl:leading-8">
+                    {copy}
+                  </CardDescription>
                 </CardContent>
               </MotionCard>
             ))}
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div
+            className={cn(
+              "grid gap-4 md:grid-cols-3",
+              compactPanel !== "scale" && "hidden 2xl:grid",
+            )}
+          >
             <MotionCard
               initial={{ opacity: 0, x: -22 }}
               animate={{ opacity: 1, x: 0 }}
@@ -106,10 +151,10 @@ export default function IntroScene() {
                 </div>
                 <div>
                   <SectionLabel className="mb-2">Escala atual</SectionLabel>
-                  <h3 className="font-display text-lg font-semibold tracking-[-0.03em]">
+                  <h3 className="font-display text-xl font-semibold tracking-[-0.03em] 2xl:text-2xl">
                     Hoje — 5 áreas
                   </h3>
-                  <p className="mt-1.5 text-sm leading-6 text-[#426a88]">
+                  <p className="mt-1.5 text-base leading-7 text-[#2c5372]/90 2xl:text-lg 2xl:leading-8">
                     MBS, Financeiro, Estoque, Jurídico e Diretoria Executiva. No
                     MBS: Faturamento, Documentação, Despesas sobre fretes,
                     Despesas de exportação, Cabine Fiscal, Gente e Gestão.
@@ -130,12 +175,35 @@ export default function IntroScene() {
                 </div>
                 <div>
                   <SectionLabel className="mb-2">Próxima fronteira</SectionLabel>
-                  <h3 className="font-display text-lg font-semibold tracking-[-0.03em]">
+                  <h3 className="font-display text-xl font-semibold tracking-[-0.03em] 2xl:text-2xl">
                     Oportunidade
                   </h3>
-                  <p className="mt-1.5 text-sm leading-6 text-[#426a88]">
+                  <p className="mt-1.5 text-base leading-7 text-[#2c5372]/90 2xl:text-lg 2xl:leading-8">
                     Catalogar as áreas que ainda não estão no domínio de
                     automação — e só então priorizar por valor, não por pedido.
+                  </p>
+                </div>
+              </div>
+            </MotionCard>
+
+            <MotionCard
+              initial={{ opacity: 0, x: 22 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.38, duration: 0.52, ease: EASE }}
+              className="p-5"
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[#eaeff5] text-[#2c5372]">
+                  <BriefcaseBusiness className="size-[18px]" strokeWidth={1.8} />
+                </div>
+                <div>
+                  <SectionLabel className="mb-2">Decisão</SectionLabel>
+                  <h3 className="font-display text-xl font-semibold tracking-[-0.03em] 2xl:text-2xl">
+                    Pedido nesta reunião
+                  </h3>
+                  <p className="mt-1.5 text-base leading-7 text-[#2c5372]/90 2xl:text-lg 2xl:leading-8">
+                    Patrocínio ao ritual de priorização, dados para discovery e
+                    apoio às movimentações de time (promoção + 1 pleno).
                   </p>
                 </div>
               </div>
@@ -146,14 +214,17 @@ export default function IntroScene() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.42, duration: 0.52, ease: EASE }}
-            className="process-rail relative overflow-hidden rounded-[1.5rem] border border-[#2c5372]/10 bg-[#2c5372] px-4 py-3 text-white shadow-[0_22px_55px_rgba(44,83,114,.16)]"
+            className={cn(
+              "process-rail relative overflow-hidden rounded-[1.5rem] border border-[#2c5372]/10 bg-[#2c5372] px-4 py-3 text-white shadow-[0_22px_55px_rgba(44,83,114,.16)]",
+              compactPanel !== "direction" && "hidden 2xl:block",
+            )}
           >
             <div className="relative z-10 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div className="shrink-0">
-                <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#eb7380]">
+                <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#eb7380] 2xl:text-[13px]">
                   Como atuamos
                 </span>
-                <p className="mt-1 text-xs text-white/55">
+                <p className="mt-1 text-[15px] font-medium text-white/90 2xl:text-base">
                   Entra no build só o que tem volume, ROI e prontidão.
                 </p>
               </div>
@@ -163,11 +234,11 @@ export default function IntroScene() {
                     key={step}
                     className="relative z-10 flex shrink-0 items-center gap-2"
                   >
-                    <span className="rounded-full border border-white/10 bg-white/[.07] px-3 py-1.5 text-[10px] font-semibold text-white/76 backdrop-blur-md">
+                    <span className="rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-sm font-semibold text-white backdrop-blur-md">
                       {step}
                     </span>
                     {index < process.length - 1 ? (
-                      <span className="text-[10px] text-[#eb7380]/60">→</span>
+                      <span className="text-sm text-[#eb7380]">→</span>
                     ) : null}
                   </div>
                 ))}
@@ -176,12 +247,17 @@ export default function IntroScene() {
           </motion.div>
         </div>
 
-        <aside className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+        <aside
+          className={cn(
+            "min-w-0",
+            compactPanel !== "model" && "hidden 2xl:block",
+          )}
+        >
           <motion.article
             initial={{ opacity: 0, x: 24, scale: 0.97 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ delay: 0.18, duration: 0.58, ease: EASE }}
-            className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[#2c5372] p-5 text-white shadow-[0_30px_80px_rgba(44,83,114,.22)]"
+            className="relative self-start overflow-hidden rounded-[2rem] border border-white/10 bg-[#2c5372] p-6 text-white shadow-[0_30px_80px_rgba(44,83,114,.28)]"
           >
             <div
               className="minerva-orbit animate-float-slow pointer-events-none absolute -right-16 -top-16 size-64"
@@ -194,15 +270,14 @@ export default function IntroScene() {
                 </div>
                 <Badge variant="dark">Modelo operacional</Badge>
               </div>
-              <h3 className="font-display text-[1.65rem] font-semibold leading-tight tracking-[-0.045em]">
+              <h3 className="font-display text-2xl font-semibold leading-tight tracking-[-0.045em]">
                 Como ganhamos escala
               </h3>
-              <p className="mt-3 text-[13px] leading-5 text-white/58">
-                Ganhamos escala com a rotação dos desenvolvedores entre
-                projetos, ampliando a experiência do time e reduzindo a
-                dependência de pessoas específicas. O compartilhamento
-                contínuo de conhecimento fortalece a colaboração e permite
-                contribuições mais amplas e eficientes.
+              <p className="mt-3 text-base leading-7 text-white/90 2xl:text-lg 2xl:leading-8">
+                A rotação entre projetos amplia a experiência, reduz
+                dependências e distribui conhecimento. O resultado é mais
+                colaboração e capacidade de contribuição entre os
+                desenvolvedores.
               </p>
               <div className="mt-5 grid grid-cols-3 gap-2">
                 {["Rotação", "Conhecimento", "Colaboração"].map((label, index) => (
@@ -210,10 +285,10 @@ export default function IntroScene() {
                     key={label}
                     className="rounded-xl border border-white/10 bg-white/[.05] px-2 py-2.5 text-center"
                   >
-                    <strong className="font-display block text-base text-[#eb7380]">
+                    <strong className="font-display block text-lg text-[#eb7380]">
                       0{index + 1}
                     </strong>
-                    <span className="text-[9px] font-bold uppercase tracking-[0.12em] text-white/42">
+                    <span className="text-xs font-bold uppercase tracking-[0.08em] text-white/85">
                       {label}
                     </span>
                   </div>
@@ -221,27 +296,6 @@ export default function IntroScene() {
               </div>
             </div>
           </motion.article>
-
-          <MotionCard
-            initial={{ opacity: 0, x: 24 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.32, duration: 0.52, ease: EASE }}
-            className="p-5"
-          >
-            <div className="mb-3 flex items-center justify-between">
-              <div className="flex size-9 items-center justify-center rounded-xl bg-[#eaeff5] text-[#2c5372]">
-                <BriefcaseBusiness className="size-[18px]" strokeWidth={1.8} />
-              </div>
-              <Badge variant="cream">Decisão</Badge>
-            </div>
-            <h3 className="font-display text-xl font-semibold tracking-[-0.035em]">
-              Pedido nesta reunião
-            </h3>
-            <p className="mt-2 text-sm leading-6 text-[#426a88]">
-              Patrocínio ao ritual de priorização com as áreas, dados para
-              discovery e apoio às movimentações de time (promoção + 1 pleno).
-            </p>
-          </MotionCard>
         </aside>
       </div>
     </Scene>

@@ -10,11 +10,15 @@ import { EASE, Scene, SceneHeading, SectionLabel } from "./primitives";
 
 export default function TeamScene() {
   const [selectedPerson, setSelectedPerson] = useState(0);
+  const [compactPanel, setCompactPanel] = useState("profile");
   const member = TEAM[selectedPerson];
   const reducedMotion = useReducedMotion();
 
   return (
-    <Scene alignScaledLeft contentClassName="gap-5">
+    <Scene
+      fitKey={`${selectedPerson}-${compactPanel}`}
+      contentClassName="gap-3.5"
+    >
       <SceneHeading
         eyebrow="04 · Capacidade"
         title={
@@ -23,7 +27,9 @@ export default function TeamScene() {
             <span className="text-[#e83948]">seniorizar para escalar.</span>
           </>
         }
-        description="A composição atual sustenta a operação; o próximo salto exige uma âncora sênior, evolução por mérito e clareza de papéis."
+        titleClassName="text-[clamp(1.4rem,1.7vw,2.1rem)]"
+        description="Capacidade atual e movimentos para sustentar a próxima escala."
+        descriptionClassName="mt-1 text-[15px]"
         aside={
           <div className="hidden items-center gap-3 rounded-full border border-[#2c5372]/10 bg-white/80 px-4 py-2.5 text-xs font-semibold text-[#426a88] shadow-sm backdrop-blur-md lg:flex">
             <Users className="size-4 text-[#e83948]" />
@@ -32,19 +38,44 @@ export default function TeamScene() {
         }
       />
 
-      <div className="grid flex-1 gap-4 xl:grid-cols-[190px_minmax(0,.95fr)_minmax(520px,1.05fr)]">
+      <div className="grid flex-1 gap-3.5 2xl:grid-cols-[180px_minmax(0,.98fr)_minmax(540px,1.02fr)]">
+        <div className="grid grid-cols-2 gap-2 rounded-2xl border border-[#2c5372]/[.08] bg-white/80 p-1.5 shadow-sm 2xl:hidden">
+          {[
+            ["profile", "Análise individual"],
+            ["team", "Movimentos gerais"],
+          ].map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setCompactPanel(value)}
+              className={cn(
+                "rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors",
+                compactPanel === value
+                  ? "bg-[#2c5372] text-white"
+                  : "text-[#426a88] hover:bg-[#eaeff5]",
+              )}
+              aria-pressed={compactPanel === value}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
         <motion.nav
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.08, duration: 0.5, ease: EASE }}
-          className="hidden gap-2 xl:grid xl:self-start"
+          className={cn(
+            "grid grid-cols-2 gap-2 sm:grid-cols-5 2xl:grid-cols-1 2xl:self-start",
+            compactPanel !== "profile" && "hidden 2xl:grid",
+          )}
           aria-label="Integrantes do time"
         >
           {TEAM.map((person, index) => (
             <button
               type="button"
               className={cn(
-                "group flex min-w-0 items-center gap-3 rounded-2xl border px-3 py-2.5 text-left transition-all duration-300",
+                "group flex min-w-0 items-center gap-2.5 rounded-2xl border px-3 py-2.5 text-left transition-all duration-300",
                 index === selectedPerson
                   ? "border-[#e83948]/30 bg-white text-[#2c5372] shadow-[0_12px_30px_rgba(44,83,114,.1)]"
                   : "border-[#2c5372]/[.07] bg-white/65 text-[#426a88] hover:border-[#e83948]/20 hover:bg-white",
@@ -61,10 +92,10 @@ export default function TeamScene() {
                 />
               </span>
               <span className="min-w-0 flex-1">
-                <strong className="block truncate text-xs font-semibold">
+                <strong className="block truncate text-sm font-semibold 2xl:text-[15px]">
                   {person.short}
                 </strong>
-                <small className="mt-0.5 block truncate text-[9px] text-[#5d86a5]">
+                <small className="mt-0.5 block truncate text-xs text-[#426a88] 2xl:text-[13px]">
                   {person.role}
                 </small>
               </span>
@@ -86,7 +117,10 @@ export default function TeamScene() {
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.14, duration: 0.52, ease: EASE }}
-          className="hidden min-h-[430px] overflow-hidden bg-white/75 xl:block"
+          className={cn(
+            "min-h-[420px] overflow-hidden bg-white/75",
+            compactPanel !== "profile" && "hidden 2xl:block",
+          )}
         >
           <AnimatePresence mode="wait">
             <motion.article
@@ -103,9 +137,9 @@ export default function TeamScene() {
                   : { opacity: 0, y: -10, filter: "blur(4px)" }
               }
               transition={{ duration: reducedMotion ? 0 : 0.34, ease: EASE }}
-              className="grid h-full min-h-[430px] lg:grid-cols-[minmax(210px,36%)_minmax(0,1fr)]"
+              className="grid h-full min-h-[420px] md:grid-cols-[180px_minmax(0,1fr)] xl:grid-cols-1 2xl:grid-cols-[minmax(190px,32%)_minmax(0,1fr)]"
             >
-              <div className="relative flex min-h-[300px] items-end justify-center overflow-hidden bg-gradient-to-b from-[#eaeff5] to-[#c7b475] px-3 pt-5">
+              <div className="relative hidden min-h-[300px] items-end justify-center overflow-hidden bg-gradient-to-b from-[#eaeff5] to-[#c7b475] px-3 pt-5 md:flex xl:hidden 2xl:flex">
                 <div
                   className="absolute inset-x-0 top-0 h-28 bg-[radial-gradient(circle_at_top,rgba(232,57,72,.14),transparent_68%)]"
                   aria-hidden="true"
@@ -136,14 +170,14 @@ export default function TeamScene() {
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#2c5372]/10 to-transparent" />
               </div>
 
-              <div className="flex min-w-0 flex-col p-6 lg:p-7">
+              <div className="flex min-w-0 flex-col p-5 2xl:p-6">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <SectionLabel>Perfil selecionado</SectionLabel>
-                    <h3 className="font-display text-[clamp(1.5rem,2.2vw,2.5rem)] font-semibold leading-[1.02] tracking-[-0.055em]">
+                    <h3 className="font-display text-[clamp(1.45rem,1.8vw,2rem)] font-semibold leading-[1.05] tracking-[-0.05em]">
                       {member.name}
                     </h3>
-                    <p className="mt-1.5 text-xs font-semibold text-[#e83948]">
+                    <p className="mt-1.5 text-[15px] font-semibold text-[#e83948] 2xl:text-base">
                       {member.role}
                     </p>
                   </div>
@@ -164,11 +198,25 @@ export default function TeamScene() {
                   ) : null}
                 </div>
 
-                <p className="mt-4 text-sm leading-6 text-[#426a88]">
+                <p className="mt-3 text-base leading-7 text-[#2c5372]/90 2xl:text-lg 2xl:leading-8">
                   {member.bio}
                 </p>
 
-                <div className="mt-5">
+                <div className="mt-4 rounded-2xl border border-[#e83948]/15 bg-[#e83948]/[.055] p-4">
+                  <SectionLabel className="mb-1.5 text-[#bf404f]">
+                    Movimento individual
+                  </SectionLabel>
+                  <h4 className="text-xl font-semibold leading-[1.3] text-[#2c5372] 2xl:text-2xl">
+                    {member.movement.title}
+                  </h4>
+                  {member.movement.description ? (
+                    <p className="mt-1.5 text-base leading-7 text-[#2c5372]/90 2xl:text-lg 2xl:leading-8">
+                      {member.movement.description}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="mt-4">
                   <SectionLabel>Competências</SectionLabel>
                   <div className="flex flex-wrap gap-2">
                     {member.skills.map((skill) => {
@@ -179,10 +227,10 @@ export default function TeamScene() {
                       return (
                         <span
                           className={cn(
-                            "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-semibold",
+                            "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold 2xl:text-[15px]",
                             level === "Avançado"
                               ? "border-[#e83948]/20 bg-[#e83948]/10 text-[#bf404f]"
-                              : "border-[#2c5372]/[.08] bg-[#eaeff5]/75 text-[#426a88]",
+                              : "border-[#2c5372]/10 bg-[#eaeff5] text-[#2c5372]",
                           )}
                           key={level ? `${tool}-${level}` : tool}
                         >
@@ -203,7 +251,10 @@ export default function TeamScene() {
           initial={{ opacity: 0, x: 22 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.52, ease: EASE }}
-          className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#2c5372] p-5 text-white shadow-[0_24px_65px_rgba(44,83,114,.2)]"
+          className={cn(
+            "relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#2c5372] p-5 text-white shadow-[0_24px_65px_rgba(44,83,114,.2)]",
+            compactPanel !== "team" && "hidden 2xl:block",
+          )}
         >
           <div
             className="minerva-orbit pointer-events-none absolute -right-24 -top-24 size-72 opacity-35"
@@ -211,38 +262,30 @@ export default function TeamScene() {
           />
           <div className="relative mb-3 flex items-start justify-between gap-4">
             <div>
-              <SectionLabel dark>Decisão de estrutura</SectionLabel>
-              <h3 className="font-display text-2xl font-semibold tracking-[-0.045em]">
-                Seniorizar o time agora
+              <SectionLabel dark>Movimentos propostos</SectionLabel>
+              <h3 className="font-display text-2xl font-semibold tracking-[-0.04em]">
+                Fechar o gap de senioridade
               </h3>
             </div>
             <ArrowUpRight className="size-5 text-[#eb7380]" strokeWidth={1.7} />
           </div>
 
-          <div className="relative grid gap-2 lg:grid-cols-2">
+          <div className="relative grid gap-2 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-2">
             {teamMoves.map((move, index) => (
               <article
-                className={cn(
-                  "grid grid-cols-[30px_minmax(0,1fr)] gap-3 rounded-2xl border border-white/[.07] bg-white/[.04] p-4",
-                  index === teamMoves.length - 1 && "lg:col-span-2",
-                )}
+                className="grid grid-cols-[30px_minmax(0,1fr)] gap-2.5 rounded-2xl border border-white/[.08] bg-white/[.045] p-3.5 2xl:p-4"
                 key={move.title}
               >
-                <span className="font-display pt-0.5 text-xs font-semibold text-[#eb7380]">
+                <span className="font-display pt-0.5 text-[15px] font-semibold text-[#eb7380] 2xl:text-base">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <h4 className="text-base font-semibold leading-5 text-white/92">
+                  <h4 className="text-lg font-semibold leading-[1.3] text-white 2xl:text-xl">
                     {move.title}
                   </h4>
-                  <p className="mt-1 text-[13px] font-semibold leading-4 text-[#eb7380]">
-                    {move.decision}
+                  <p className="mt-1.5 text-[15px] leading-6 text-white/88 2xl:text-base 2xl:leading-7">
+                    {move.description}
                   </p>
-                  {move.description ? (
-                    <p className="mt-1 text-xs leading-[1.5] text-white/60">
-                      {move.description}
-                    </p>
-                  ) : null}
                 </div>
               </article>
             ))}

@@ -79,7 +79,7 @@ function OpeningCurtain({ visible }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.36, duration: 0.42 }}
-              className="mt-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#5d86a5]"
+              className="mt-2 text-xs font-bold uppercase tracking-[0.2em] text-[#5d86a5]"
             >
               Apresentação à diretoria
             </motion.span>
@@ -217,7 +217,7 @@ export default function ExecutiveDeck() {
           <LogoMark />
           <div className="min-w-0">
             <MinervaWordmark className="text-[13px]" />
-            <div className="hidden text-[8px] font-semibold uppercase tracking-[0.14em] text-[#5d86a5] sm:block">
+            <div className="hidden text-[10px] font-semibold uppercase tracking-[0.12em] text-[#5d86a5] sm:block">
               Hiperautomação · diretoria
             </div>
           </div>
@@ -231,7 +231,7 @@ export default function ExecutiveDeck() {
             <button
               type="button"
               className={cn(
-                "relative rounded-full px-3.5 py-2 text-[10px] font-semibold transition-colors duration-300",
+                "relative rounded-full px-3.5 py-2 text-[11px] font-semibold transition-colors duration-300",
                 index === active
                   ? "text-white"
                   : "text-[#426a88] hover:text-[#2c5372]",
@@ -253,7 +253,7 @@ export default function ExecutiveDeck() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2 lg:ml-0">
-          <span className="hidden text-[9px] font-bold tabular-nums text-[#5d86a5] sm:block">
+          <span className="hidden text-[11px] font-bold tabular-nums text-[#5d86a5] sm:block">
             {String(active + 1).padStart(2, "0")} /{" "}
             {String(SLIDES.length).padStart(2, "0")}
           </span>
@@ -313,7 +313,7 @@ export default function ExecutiveDeck() {
       <footer
         className="deck-chrome relative z-30 flex h-[52px] items-center justify-between border-t border-[#2c5372]/[.08] bg-white px-4 text-[#2c5372] sm:px-6 lg:px-8"
       >
-        <span className="hidden text-[9px] font-medium text-[#5d86a5] sm:block">
+        <span className="hidden text-[10px] font-medium text-[#5d86a5] sm:block">
           Uso interno · CoE de Hiperautomação · Horizonte 12 meses
         </span>
 
@@ -332,7 +332,7 @@ export default function ExecutiveDeck() {
         </div>
 
         <div className="ml-auto flex items-center gap-2">
-          <span className="mr-1 hidden items-center gap-1.5 text-[9px] text-[#5d86a5] md:flex">
+          <span className="mr-1 hidden items-center gap-1.5 text-[10px] text-[#5d86a5] md:flex">
             <Sparkles className="size-3" />
             ← → para navegar
           </span>

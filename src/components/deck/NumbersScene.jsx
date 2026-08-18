@@ -22,7 +22,7 @@ function TrendChart() {
       role="img"
       aria-label="Tendência de execuções diárias nos últimos 30 dias, conforme o dashboard enviado."
     >
-      <div className="pointer-events-none absolute inset-y-2 left-0 flex w-10 flex-col justify-between text-[9px] font-semibold text-[#5d86a5]">
+      <div className="pointer-events-none absolute inset-y-2 left-0 flex w-10 flex-col justify-between text-[11px] font-semibold text-[#426a88] 2xl:text-xs">
         <span>1.600</span>
         <span>1.200</span>
         <span>800</span>
@@ -76,7 +76,7 @@ function TrendChart() {
           transition={{ delay: 0.48, duration: 1.15, ease: EASE }}
         />
       </svg>
-      <div className="absolute inset-x-11 bottom-0 flex justify-between text-[9px] font-semibold text-[#5d86a5]">
+      <div className="absolute inset-x-11 bottom-0 flex justify-between text-[11px] font-semibold text-[#426a88] 2xl:text-xs">
         {["19/07", "25/07", "31/07", "05/08", "10/08", "17/08"].map(
           (date) => (
             <span key={date}>{date}</span>
@@ -103,7 +103,7 @@ function Ranking() {
           <div className="min-w-0">
             <div className="flex items-center justify-between gap-3">
               <strong
-                className="truncate text-[11px] font-semibold text-[#426a88]"
+                className="truncate text-[13px] font-semibold text-[#426a88] 2xl:text-sm"
                 title={automation.name}
               >
                 {automation.name}
@@ -136,7 +136,7 @@ function Ranking() {
 
 export default function NumbersScene() {
   return (
-    <Scene contentClassName="gap-5">
+    <Scene contentClassName="gap-3.5">
       <SceneHeading
         eyebrow="02 · Operação"
         title={
@@ -170,14 +170,14 @@ export default function NumbersScene() {
               <h3 className="font-display text-lg font-semibold tracking-[-0.035em]">
                 Execuções por dia
               </h3>
-              <p className="mt-1 text-xs text-[#5d86a5]">
+              <p className="mt-1 text-[13px] text-[#426a88] 2xl:text-sm">
                 Volume total e sucessos ao longo do período
               </p>
             </div>
             <Badge variant="cream">30 dias</Badge>
           </div>
           <TrendChart />
-          <div className="mt-2 flex items-center gap-5 text-[10px] font-semibold text-[#426a88]">
+          <div className="mt-2 flex items-center gap-5 text-xs font-semibold text-[#426a88] 2xl:text-[13px]">
             <span className="flex items-center gap-2">
               <i className="size-2 rounded-full bg-[#2c5372]" /> Total
             </span>
@@ -199,7 +199,7 @@ export default function NumbersScene() {
               <h3 className="font-display text-lg font-semibold tracking-[-0.035em]">
                 Top robôs por execuções
               </h3>
-              <p className="mt-1 text-xs text-[#5d86a5]">
+              <p className="mt-1 text-[13px] text-[#426a88] 2xl:text-sm">
                 Quebra mensal por processo
               </p>
             </div>
@@ -230,7 +230,7 @@ export default function NumbersScene() {
               <strong className="font-display text-[3.4rem] font-semibold leading-[.82] tracking-[-0.075em] text-[#2c5372]">
                 107
               </strong>
-              <span className="max-w-20 pb-1 text-[10px] font-bold uppercase leading-3 tracking-[0.08em] text-[#426a88]">
+              <span className="max-w-24 pb-1 text-xs font-bold uppercase leading-4 tracking-[0.07em] text-[#426a88] 2xl:text-[13px]">
                 automações ativas
               </span>
             </div>
@@ -246,7 +246,7 @@ export default function NumbersScene() {
                   <strong className="font-display block text-2xl tracking-[-0.05em] text-[#2c5372]">
                     {value}
                   </strong>
-                  <span className="text-[9px] font-semibold text-[#426a88]">
+                  <span className="text-[11px] font-semibold text-[#426a88] 2xl:text-xs">
                     {label}
                   </span>
                 </div>
@@ -260,7 +260,7 @@ export default function NumbersScene() {
             <h3 className="font-display text-xl font-semibold tracking-[-0.04em]">
               Execuções RPA × humano
             </h3>
-            <p className="mt-2 text-xs leading-5 text-white/55">
+            <p className="mt-2 text-sm leading-5 text-white/70 2xl:text-[15px] 2xl:leading-6">
               Comparar economia de tempo e performance por processo, área e
               tecnologia.
             </p>
