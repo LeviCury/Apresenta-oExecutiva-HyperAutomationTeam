@@ -69,29 +69,30 @@ export const topAutomations = [
 
 export const teamMoves = [
   {
-    title: "Seniorizar antes de ampliar",
-    description:
-      "1 especialista para 4 em desenvolvimento. Reduzir a dependência técnica antes de ampliar o headcount júnior.",
+    title: "Igor Martins Minuncio",
+    decision: "Contratação interna · Tech Lead formal do CoE",
   },
   {
-    title: "Garantir uma âncora sênior",
+    title: "Levi Ribeiro Cury",
+    decision: "Promoção para Analista Pl. Full Stack",
     description:
-      "A: contratar Igor como Tech Lead. B: desenhar agora um perfil externo sênior em Python/RPA, arquitetura, governança e mentoria.",
+      "Entregas no DHC e Executive Reports, ampliando a orquestração de RPAs Python e a visibilidade executiva.",
   },
   {
-    title: "Promover João Crispim por mérito",
+    title: "João Crispim Moreira Neto",
+    decision: "Promoção por tempo de empresa e frentes atuadas",
     description:
-      "Reconhecer os temas adicionais que liderou, o escopo ampliado e as entregas além da função atual.",
+      "Deploy de objetos de banco/Delphi e atuação na migração IBM → Python (DHC).",
   },
   {
-    title: "Evoluir Levi para pleno (6–12 meses)",
-    description:
-      "Trilha baseada em stack IBM/Python, ownership em PRD, qualidade de entrega e autonomia crescente.",
+    title: "Daniel Eduardo Fernandes dos Santos",
+    decision: "Validação das entregas",
+    description: "Atuação na migração IBM → Python (DHC).",
   },
   {
-    title: "Alinhar cargo e trilha do Daniel",
-    description:
-      "Analista Administrativo Pl. no CoE. Converter para trilha de sistemas/automação ou formalizar papel de process analyst.",
+    title: "Guilherme Bretanha Franco Fernandes",
+    decision: "Validação das entregas",
+    description: "Atuação na migração IBM → Python (DHC).",
   },
 ];
 

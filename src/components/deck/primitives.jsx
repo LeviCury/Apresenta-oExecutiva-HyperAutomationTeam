@@ -159,12 +159,14 @@ export function SceneHeading({
 export function Scene({
   children,
   dark = false,
+  alignScaledLeft = false,
   className,
   contentClassName,
 }) {
   const viewportRef = useRef(null);
   const contentRef = useRef(null);
   const [scale, setScale] = useState(1);
+  const [isCompactViewport, setIsCompactViewport] = useState(false);
 
   useLayoutEffect(() => {
     const viewport = viewportRef.current;
@@ -177,6 +179,7 @@ export function Scene({
       frame = window.requestAnimationFrame(() => {
         const availableWidth = viewport.clientWidth;
         const availableHeight = viewport.clientHeight;
+        setIsCompactViewport(availableWidth < 1200);
         const previousStyles = {
           left: content.style.left,
           width: content.style.width,
@@ -265,13 +268,22 @@ export function Scene({
       <div
         ref={contentRef}
         style={{
-          left: `${(100 - 100 / scale) / 2}%`,
-          width: `${100 / scale}%`,
+          left:
+            alignScaledLeft && isCompactViewport && scale < 0.999
+              ? `${(1 - scale) * 50}%`
+              : alignScaledLeft && scale < 0.999
+                ? "0"
+                : `${(100 - 100 / scale) / 2}%`,
+          width:
+            alignScaledLeft && isCompactViewport && scale < 0.999
+              ? "100%"
+              : `${100 / scale}%`,
           maxWidth: scale < 0.999 ? "none" : undefined,
           marginLeft: scale < 0.999 ? "0" : undefined,
           marginRight: scale < 0.999 ? "0" : undefined,
           transform: `scale(${scale})`,
-          transformOrigin: "top center",
+          transformOrigin:
+            alignScaledLeft && scale < 0.999 ? "top left" : "top center",
         }}
         className={cn(
           "scene-fit-content relative mx-auto flex min-h-full w-full max-w-[1580px] flex-col px-5 py-5 sm:px-8 sm:py-7 lg:px-12 lg:py-8 2xl:px-16",

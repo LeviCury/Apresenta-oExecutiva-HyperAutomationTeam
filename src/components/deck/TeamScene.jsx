@@ -14,7 +14,7 @@ export default function TeamScene() {
   const reducedMotion = useReducedMotion();
 
   return (
-    <Scene contentClassName="gap-5">
+    <Scene alignScaledLeft contentClassName="gap-5">
       <SceneHeading
         eyebrow="04 · Capacidade"
         title={
@@ -32,12 +32,12 @@ export default function TeamScene() {
         }
       />
 
-      <div className="grid flex-1 gap-4 lg:grid-cols-[150px_minmax(0,.9fr)_minmax(360px,1.1fr)] xl:grid-cols-[190px_minmax(0,.95fr)_minmax(520px,1.05fr)]">
+      <div className="grid flex-1 gap-4 xl:grid-cols-[190px_minmax(0,.95fr)_minmax(520px,1.05fr)]">
         <motion.nav
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.08, duration: 0.5, ease: EASE }}
-          className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1 lg:self-start"
+          className="hidden gap-2 xl:grid xl:self-start"
           aria-label="Integrantes do time"
         >
           {TEAM.map((person, index) => (
@@ -86,7 +86,7 @@ export default function TeamScene() {
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.14, duration: 0.52, ease: EASE }}
-          className="min-h-[430px] overflow-hidden bg-white/75"
+          className="hidden min-h-[430px] overflow-hidden bg-white/75 xl:block"
         >
           <AnimatePresence mode="wait">
             <motion.article
@@ -168,23 +168,30 @@ export default function TeamScene() {
                   {member.bio}
                 </p>
 
-                <div className="mt-auto pt-5">
+                <div className="mt-5">
                   <SectionLabel>Competências</SectionLabel>
-                  <div className="flex flex-wrap gap-1.5">
-                    {member.skills.map(([tool, level]) => (
-                      <span
-                        className={cn(
-                          "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[9px] font-semibold",
-                          level === "Avançado"
-                            ? "border-[#e83948]/20 bg-[#e83948]/10 text-[#bf404f]"
-                            : "border-[#2c5372]/[.08] bg-[#eaeff5]/75 text-[#426a88]",
-                        )}
-                        key={`${tool}-${level}`}
-                      >
-                        <CheckCircle2 className="size-2.5" strokeWidth={2} />
-                        {tool} · {level}
-                      </span>
-                    ))}
+                  <div className="flex flex-wrap gap-2">
+                    {member.skills.map((skill) => {
+                      const [tool, level] = Array.isArray(skill)
+                        ? skill
+                        : [skill, null];
+
+                      return (
+                        <span
+                          className={cn(
+                            "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-semibold",
+                            level === "Avançado"
+                              ? "border-[#e83948]/20 bg-[#e83948]/10 text-[#bf404f]"
+                              : "border-[#2c5372]/[.08] bg-[#eaeff5]/75 text-[#426a88]",
+                          )}
+                          key={level ? `${tool}-${level}` : tool}
+                        >
+                          <CheckCircle2 className="size-3" strokeWidth={2} />
+                          {tool}
+                          {level ? ` · ${level}` : null}
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -212,39 +219,30 @@ export default function TeamScene() {
             <ArrowUpRight className="size-5 text-[#eb7380]" strokeWidth={1.7} />
           </div>
 
-          <div className="relative mb-3 flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[.06] p-3.5">
-            <strong className="font-display text-[2.6rem] font-semibold leading-none tracking-[-0.075em] text-[#eb7380]">
-              1:4
-            </strong>
-            <div>
-              <b className="block text-xs font-semibold text-white">
-                senioridade é o gargalo
-              </b>
-              <p className="mt-1 text-[10px] leading-4 text-white/55">
-                Uma âncora técnica para quatro profissionais em desenvolvimento.
-              </p>
-            </div>
-          </div>
-
-          <div className="relative grid gap-2 xl:grid-cols-2">
+          <div className="relative grid gap-2 lg:grid-cols-2">
             {teamMoves.map((move, index) => (
               <article
                 className={cn(
-                  "grid grid-cols-[24px_minmax(0,1fr)] gap-2.5 rounded-2xl border border-white/[.07] bg-white/[.04] p-3",
-                  index === teamMoves.length - 1 && "xl:col-span-2",
+                  "grid grid-cols-[30px_minmax(0,1fr)] gap-3 rounded-2xl border border-white/[.07] bg-white/[.04] p-4",
+                  index === teamMoves.length - 1 && "lg:col-span-2",
                 )}
                 key={move.title}
               >
-                <span className="font-display pt-0.5 text-[10px] font-semibold text-[#eb7380]">
+                <span className="font-display pt-0.5 text-xs font-semibold text-[#eb7380]">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <h4 className="text-[13px] font-semibold leading-4 text-white/90">
+                  <h4 className="text-base font-semibold leading-5 text-white/92">
                     {move.title}
                   </h4>
-                  <p className="mt-1 text-[11px] leading-[1.45] text-white/55">
-                    {move.description}
+                  <p className="mt-1 text-[13px] font-semibold leading-4 text-[#eb7380]">
+                    {move.decision}
                   </p>
+                  {move.description ? (
+                    <p className="mt-1 text-xs leading-[1.5] text-white/60">
+                      {move.description}
+                    </p>
+                  ) : null}
                 </div>
               </article>
             ))}
