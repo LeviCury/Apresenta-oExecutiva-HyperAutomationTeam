@@ -16,23 +16,23 @@ export default function TeamScene() {
   return (
     <Scene contentClassName="gap-5">
       <SceneHeading
-        eyebrow="03 · Capacidade"
+        eyebrow="04 · Capacidade"
         title={
           <>
-            Equipe — o que temos e{" "}
-            <span className="text-[#e83948]">o que falta.</span>
+            Equipe —{" "}
+            <span className="text-[#e83948]">seniorizar para escalar.</span>
           </>
         }
-        description="A composição atual sustenta a operação; o próximo salto depende de senioridade, distribuição de conhecimento e clareza de papéis."
+        description="A composição atual sustenta a operação; o próximo salto exige uma âncora sênior, evolução por mérito e clareza de papéis."
         aside={
           <div className="hidden items-center gap-3 rounded-full border border-[#2c5372]/10 bg-white/80 px-4 py-2.5 text-xs font-semibold text-[#426a88] shadow-sm backdrop-blur-md lg:flex">
             <Users className="size-4 text-[#e83948]" />
-            5 pessoas · 1 especialista
+            1 especialista · 4 em desenvolvimento
           </div>
         }
       />
 
-      <div className="grid flex-1 gap-4 lg:grid-cols-[170px_minmax(0,1fr)_280px] xl:grid-cols-[230px_minmax(0,1fr)_390px]">
+      <div className="grid flex-1 gap-4 lg:grid-cols-[150px_minmax(0,.9fr)_minmax(360px,1.1fr)] xl:grid-cols-[190px_minmax(0,.95fr)_minmax(520px,1.05fr)]">
         <motion.nav
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -196,31 +196,53 @@ export default function TeamScene() {
           initial={{ opacity: 0, x: 22 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2, duration: 0.52, ease: EASE }}
-          className="rounded-[1.75rem] border border-white/10 bg-[#2c5372] p-5 text-white shadow-[0_24px_65px_rgba(44,83,114,.2)]"
+          className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#2c5372] p-5 text-white shadow-[0_24px_65px_rgba(44,83,114,.2)]"
         >
-          <div className="mb-3 flex items-center justify-between">
+          <div
+            className="minerva-orbit pointer-events-none absolute -right-24 -top-24 size-72 opacity-35"
+            aria-hidden="true"
+          />
+          <div className="relative mb-3 flex items-start justify-between gap-4">
             <div>
-              <SectionLabel dark>Movimentos propostos</SectionLabel>
-              <h3 className="font-display text-xl font-semibold tracking-[-0.04em]">
-                Fechar o gap de senioridade
+              <SectionLabel dark>Decisão de estrutura</SectionLabel>
+              <h3 className="font-display text-2xl font-semibold tracking-[-0.045em]">
+                Seniorizar o time agora
               </h3>
             </div>
             <ArrowUpRight className="size-5 text-[#eb7380]" strokeWidth={1.7} />
           </div>
-          <div className="divide-y divide-white/[.08]">
+
+          <div className="relative mb-3 flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[.06] p-3.5">
+            <strong className="font-display text-[2.6rem] font-semibold leading-none tracking-[-0.075em] text-[#eb7380]">
+              1:4
+            </strong>
+            <div>
+              <b className="block text-xs font-semibold text-white">
+                senioridade é o gargalo
+              </b>
+              <p className="mt-1 text-[10px] leading-4 text-white/55">
+                Uma âncora técnica para quatro profissionais em desenvolvimento.
+              </p>
+            </div>
+          </div>
+
+          <div className="relative grid gap-2 xl:grid-cols-2">
             {teamMoves.map((move, index) => (
               <article
-                className="grid grid-cols-[26px_minmax(0,1fr)] gap-3 py-3"
+                className={cn(
+                  "grid grid-cols-[24px_minmax(0,1fr)] gap-2.5 rounded-2xl border border-white/[.07] bg-white/[.04] p-3",
+                  index === teamMoves.length - 1 && "xl:col-span-2",
+                )}
                 key={move.title}
               >
                 <span className="font-display pt-0.5 text-[10px] font-semibold text-[#eb7380]">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <h4 className="text-[11px] font-semibold text-white/86">
+                  <h4 className="text-[13px] font-semibold leading-4 text-white/90">
                     {move.title}
                   </h4>
-                  <p className="mt-1 text-[10px] leading-[1.55] text-white/46">
+                  <p className="mt-1 text-[11px] leading-[1.45] text-white/55">
                     {move.description}
                   </p>
                 </div>

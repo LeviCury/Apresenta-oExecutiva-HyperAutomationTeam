@@ -15,7 +15,7 @@ export default function PlanScene() {
   return (
     <Scene contentClassName="gap-5">
       <SceneHeading
-        eyebrow="04 · Execução"
+        eyebrow="05 · Execução"
         title={
           <>
             Plano de trabalho — marcos e entrega{" "}

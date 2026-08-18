@@ -214,6 +214,46 @@ export default function NumbersScene() {
           transition={{ delay: 0.43, duration: 0.52, ease: EASE }}
           className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1"
         >
+          <article className="relative overflow-hidden rounded-[1.75rem] border border-[#e83948]/15 bg-[#eaeff5] p-5 shadow-[0_18px_45px_rgba(44,83,114,.08)]">
+            <Bot
+              className="absolute -right-5 -top-5 size-24 text-[#2c5372]/[.04]"
+              strokeWidth={1.2}
+            />
+            <SectionLabel>Escala atual</SectionLabel>
+            <div className="flex items-center justify-between">
+              <h3 className="font-display text-xl font-semibold tracking-[-0.04em]">
+                Portfólio em operação
+              </h3>
+              <Bot className="size-5 text-[#e83948]" strokeWidth={1.7} />
+            </div>
+            <div className="mt-4 flex items-end gap-3">
+              <strong className="font-display text-[3.4rem] font-semibold leading-[.82] tracking-[-0.075em] text-[#2c5372]">
+                107
+              </strong>
+              <span className="max-w-20 pb-1 text-[10px] font-bold uppercase leading-3 tracking-[0.08em] text-[#426a88]">
+                automações ativas
+              </span>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              {[
+                ["5", "áreas atendidas"],
+                ["4", "tecnologias"],
+              ].map(([value, label]) => (
+                <div
+                  key={label}
+                  className="rounded-xl border border-[#2c5372]/[.08] bg-white/80 px-3 py-2.5"
+                >
+                  <strong className="font-display block text-2xl tracking-[-0.05em] text-[#2c5372]">
+                    {value}
+                  </strong>
+                  <span className="text-[9px] font-semibold text-[#426a88]">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </article>
+
           <article className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#2c5372] p-5 text-white shadow-[0_22px_60px_rgba(44,83,114,.18)]">
             <TrendingUp className="absolute -right-5 -top-5 size-24 text-white/[.035]" />
             <SectionLabel dark>Próxima leitura</SectionLabel>
@@ -227,35 +267,6 @@ export default function NumbersScene() {
             <div className="mt-4 flex flex-wrap gap-2">
               <Badge variant="dark">Tempo economizado</Badge>
               <Badge variant="dark">Performance</Badge>
-            </div>
-          </article>
-
-          <article className="rounded-[1.75rem] border border-[#2c5372]/[.09] bg-[#eaeff5] p-5 shadow-[0_18px_45px_rgba(44,83,114,.08)]">
-            <SectionLabel>Escala atual</SectionLabel>
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-display text-xl font-semibold tracking-[-0.04em]">
-                Portfólio em operação
-              </h3>
-              <Bot className="size-5 text-[#e83948]" strokeWidth={1.7} />
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                ["107", "automações ativas"],
-                ["5", "áreas atendidas"],
-                ["4", "tecnologias"],
-              ].map(([value, label]) => (
-                <div
-                  key={label}
-                  className="rounded-xl border border-[#2c5372]/[.08] bg-white/75 px-3 py-2"
-                >
-                  <strong className="font-display block text-xl tracking-[-0.05em]">
-                    {value}
-                  </strong>
-                  <span className="text-[9px] font-semibold text-[#426a88]">
-                    {label}
-                  </span>
-                </div>
-              ))}
             </div>
           </article>
         </motion.div>

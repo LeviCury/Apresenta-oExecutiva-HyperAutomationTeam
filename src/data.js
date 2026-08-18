@@ -102,7 +102,7 @@ export const TEAM = [
 export const SLIDES = [
   { label: "1. Introdução", hash: "introducao" },
   { label: "2. Números", hash: "numeros" },
-  { label: "3. Equipe", hash: "equipe" },
-  { label: "4. Plano de trabalho", hash: "plano-de-trabalho" },
-  { label: "5. ROI ganho", hash: "roi-ganho" },
+  { label: "3. ROI ganho", hash: "roi-ganho" },
+  { label: "4. Equipe", hash: "equipe" },
+  { label: "5. Plano de trabalho", hash: "plano-de-trabalho" },
 ];

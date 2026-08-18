@@ -236,7 +236,7 @@ export default function RoiScene() {
   return (
     <Scene contentClassName="gap-4">
       <SceneHeading
-        eyebrow="05 · Retorno comprovado"
+        eyebrow="03 · Retorno comprovado"
         title={
           <>
             ROI ganho. Nossos RPAs entregam o equivalente a{" "}

@@ -25,14 +25,16 @@ import { cn } from "./lib/utils";
 const scenes = [
   <IntroScene key="introducao" />,
   <NumbersScene key="numeros" />,
+  <RoiScene key="roi-ganho" />,
   <TeamScene key="equipe" />,
   <PlanScene key="plano-de-trabalho" />,
-  <RoiScene key="roi-ganho" />,
 ];
 
 function getSlideFromHash() {
   const hash = window.location.hash.replace("#", "");
-  if (hash === "roi-detalhado") return SLIDES.length - 1;
+  if (hash === "roi-detalhado") {
+    return SLIDES.findIndex((slide) => slide.hash === "roi-ganho");
+  }
   const index = SLIDES.findIndex((slide) => slide.hash === hash);
   return index >= 0 ? index : 0;
 }

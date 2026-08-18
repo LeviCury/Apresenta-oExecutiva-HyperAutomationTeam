@@ -1,5 +1,6 @@
 import {
   BarChart3,
+  Bot,
   Code2,
   Factory,
   Gauge,
@@ -10,6 +11,14 @@ import {
 } from "lucide-react";
 
 export const operationKpis = [
+  {
+    value: 107,
+    label: "Automações ativas",
+    delta: "5 áreas · 4 tecnologias",
+    tone: "brand",
+    className: "border-[#2c5372]/15 bg-[#eaeff5]",
+    icon: Bot,
+  },
   {
     value: 26522,
     label: "Total de execuções",
@@ -23,13 +32,6 @@ export const operationKpis = [
     delta: "↑ 99,1%",
     tone: "positive",
     icon: Target,
-  },
-  {
-    value: 1440,
-    label: "Falhas",
-    delta: "↑ 56,5%",
-    tone: "negative",
-    icon: Gauge,
   },
   {
     value: 93.2,
@@ -67,34 +69,29 @@ export const topAutomations = [
 
 export const teamMoves = [
   {
-    title: "Skills que o CoE precisa",
+    title: "Seniorizar antes de ampliar",
     description:
-      "Python pleno, governança N8N, ops/sustentação, discovery com ROI, IDP/IA com validação — hoje concentradas no especialista.",
+      "1 especialista para 4 em desenvolvimento. Reduzir a dependência técnica antes de ampliar o headcount júnior.",
   },
   {
-    title: "Não contratar mais júnior agora",
+    title: "Garantir uma âncora sênior",
     description:
-      "4 juniores + 1 especialista. Gargalo é mentoria e review, não headcount júnior.",
+      "A: contratar Igor como Tech Lead. B: desenhar agora um perfil externo sênior em Python/RPA, arquitetura, governança e mentoria.",
   },
   {
-    title: "Contratar 1 Analista Pleno (Python/RPA)",
+    title: "Promover João Crispim por mérito",
     description:
-      "Destravar a migração IBM → Python e aliviar o especialista para arquitetura e padrões.",
+      "Reconhecer os temas adicionais que liderou, o escopo ampliado e as entregas além da função atual.",
   },
   {
-    title: "Promover 1 júnior → pleno (6–12 meses)",
+    title: "Evoluir Levi para pleno (6–12 meses)",
     description:
-      "Candidato natural: Levi, por stack IBM/Python. Evidência: ownership em PRD + qualidade.",
+      "Trilha baseada em stack IBM/Python, ownership em PRD, qualidade de entrega e autonomia crescente.",
   },
   {
-    title: "Alinhar cargo do Daniel",
+    title: "Alinhar cargo e trilha do Daniel",
     description:
       "Analista Administrativo Pl. no CoE. Converter para trilha de sistemas/automação ou formalizar papel de process analyst.",
-  },
-  {
-    title: "Tracks internos",
-    description:
-      "João: N8N/governança. Guilherme: delivery. Igor: Tech Lead formal do CoE.",
   },
 ];
 
