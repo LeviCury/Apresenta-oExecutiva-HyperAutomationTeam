@@ -20,6 +20,12 @@ import {
   SectionLabel,
 } from "./primitives";
 
+const formatDecimal = (value) =>
+  value.toLocaleString("pt-BR", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+
 const evidence = [
   {
     ...roiMetrics.dcpoa,
@@ -39,8 +45,8 @@ const evidence = [
     ...roiMetrics.exportInvoice,
     icon: ReceiptText,
     accent: "red",
-    answer: "~1,4 analista",
-    details: "570 × 20 min = 190 horas mensais.",
+    answer: `~${formatDecimal(roiMetrics.exportInvoice.analysts)} analistas`,
+    details: `${roiMetrics.exportInvoice.executions.toLocaleString("pt-BR")} × 20 min = ${roiMetrics.exportInvoice.hours.toLocaleString("pt-BR")} h manuais · runtime ${formatDecimal(roiMetrics.exportInvoice.runtimeHours)} h · redução ${formatDecimal(roiMetrics.exportInvoice.timeReduction)}%.`,
   },
 ];
 
@@ -81,7 +87,7 @@ function CapacityChart() {
         <div
           className="relative h-16 overflow-visible rounded-2xl border border-white/[.08] bg-black/15"
           role="img"
-          aria-label="O trabalho dos robôs equivale a 47,4 analistas, acima da capacidade assumida de 42 analistas."
+          aria-label={`O trabalho dos robôs equivale a ${formatDecimal(roiMetrics.total.analysts)} analistas, acima da capacidade assumida de ${roiMetrics.capacity} analistas.`}
         >
           {[33.333, 66.666].map((position) => (
             <span
@@ -99,7 +105,7 @@ function CapacityChart() {
             style={{ width: `calc(${barWidth}% - 8px)` }}
           >
             <span className="absolute right-3 top-1/2 -translate-y-1/2 font-display text-lg font-semibold tracking-[-0.04em] text-white">
-              ~47,4
+              ~{formatDecimal(roiMetrics.total.analysts)}
             </span>
           </motion.div>
           <motion.div
@@ -149,12 +155,18 @@ function ConclusionPanel() {
       </div>
       <div className="relative mt-4 border-t border-white/15 pt-3 sm:mt-0 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">
         <p className="text-xs leading-5 text-white/82">
-          Julho equivale a <strong className="text-white">~47,4 analistas</strong>{" "}
-          — acima da capacidade assumida de 42.
+          Julho equivale a{" "}
+          <strong className="text-white">
+            ~{formatDecimal(roiMetrics.total.analysts)} analistas
+          </strong>{" "}
+          — acima da capacidade assumida de {roiMetrics.capacity}.
         </p>
         <p className="mt-1.5 text-[9px] leading-4 text-white/58">
           Até no cenário mais otimista do DCPOA, o total chega a{" "}
-          <strong className="text-white">44,0 analistas</strong>.
+          <strong className="text-white">
+            {formatDecimal(roiMetrics.total.conservativeAnalysts)} analistas
+          </strong>
+          .
         </p>
       </div>
     </motion.section>
