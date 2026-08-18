@@ -105,5 +105,4 @@ export const SLIDES = [
   { label: "3. Equipe", hash: "equipe" },
   { label: "4. Plano de trabalho", hash: "plano-de-trabalho" },
   { label: "5. ROI ganho", hash: "roi-ganho" },
-  { label: "6. ROI detalhado", hash: "roi-detalhado" },
 ];
