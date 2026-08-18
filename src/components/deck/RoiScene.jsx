@@ -58,9 +58,8 @@ const evidence = [
   },
 ];
 
-function CapacityChart() {
+function DeliveryChart() {
   const barWidth = (roiMetrics.total.analysts / 60) * 100;
-  const markerPosition = (roiMetrics.capacity / 60) * 100;
 
   return (
     <motion.section
@@ -71,14 +70,14 @@ function CapacityChart() {
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <SectionLabel>Capacidade equivalente</SectionLabel>
+          <SectionLabel>Entrega equivalente</SectionLabel>
           <h3 className="font-display text-lg font-semibold tracking-[-0.04em] text-[#2c5372]">
-            Trabalho dos robôs vs. capacidade de 42 analistas
+            RPAs entregam o equivalente a{" "}
+            {formatDecimal(roiMetrics.total.analysts)} analistas
           </h3>
           <p className="mt-1 max-w-[680px] text-[10px] leading-4 text-[#426a88]">
-            Barra = trabalho executado pelos robôs em julho, convertido em
-            analistas (140 h/mês). A linha marca a capacidade assumida de 42
-            analistas.
+            Trabalho automatizado em julho convertido pela premissa de 140
+            horas úteis por analista/mês.
           </p>
         </div>
         <Badge variant="cream" className="shrink-0">
@@ -95,7 +94,7 @@ function CapacityChart() {
         <div
           className="relative h-16 overflow-visible rounded-2xl border border-[#2c5372]/[.08] bg-[#eaeff5]/60"
           role="img"
-          aria-label={`O trabalho dos robôs equivale a ${formatDecimal(roiMetrics.total.analysts)} analistas, acima da capacidade assumida de ${roiMetrics.capacity} analistas.`}
+          aria-label={`O trabalho entregue pelos RPAs equivale a ${formatDecimal(roiMetrics.total.analysts)} analistas.`}
         >
           {[33.333, 66.666].map((position) => (
             <span
@@ -106,30 +105,19 @@ function CapacityChart() {
             />
           ))}
           <motion.div
-            className="roi-bar-pattern absolute inset-y-2 left-2 origin-left rounded-xl bg-gradient-to-r from-[#bf404f] via-[#e83948] to-[#eb7380] shadow-[0_0_45px_rgba(232,57,72,.24)]"
+            className="absolute inset-y-2 left-2 origin-left rounded-xl bg-gradient-to-r from-[#2c5372] via-[#426a88] to-[#e83948] shadow-[0_0_45px_rgba(44,83,114,.2)]"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 0.45, duration: 1.05, ease: EASE }}
             style={{ width: `calc(${barWidth}% - 8px)` }}
           >
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 font-display text-lg font-semibold tracking-[-0.04em] text-white">
+            <span className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#2c5372] px-3 py-1 font-display text-base font-bold tracking-[-0.04em] text-white shadow-[0_5px_18px_rgba(44,83,114,.35)] ring-2 ring-white/90">
               ~{formatDecimal(roiMetrics.total.analysts)}
-            </span>
-          </motion.div>
-          <motion.div
-            className="absolute -inset-y-2 w-px bg-[#c7b475] shadow-[0_0_18px_rgba(199,180,117,.5)]"
-            initial={{ opacity: 0, scaleY: 0 }}
-            animate={{ opacity: 1, scaleY: 1 }}
-            transition={{ delay: 1.05, duration: 0.42, ease: EASE }}
-            style={{ left: `${markerPosition}%` }}
-          >
-            <span className="absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#c7b475]/30 bg-[#2c5372] px-2 py-1 text-[9px] font-bold text-[#c7b475]">
-              42 analistas
             </span>
           </motion.div>
         </div>
         <div className="mt-2 flex justify-end text-[9px] font-semibold uppercase tracking-[0.12em] text-[#5d86a5]">
-          Analistas equivalentes
+          Equivalência em analistas · 140 h/mês
         </div>
       </div>
     </motion.section>
@@ -142,7 +130,7 @@ function ConclusionPanel() {
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, duration: 0.5, ease: EASE }}
-      className="relative grid overflow-hidden rounded-[1.65rem] border border-[#eb7380]/25 bg-[#e83948] p-4 text-white shadow-[0_22px_65px_rgba(232,57,72,.2)] sm:grid-cols-[190px_minmax(0,1fr)] sm:items-center sm:gap-5"
+      className="relative grid overflow-hidden rounded-[1.65rem] border border-[#eb7380]/25 bg-[#e83948] p-4 text-white shadow-[0_22px_65px_rgba(232,57,72,.2)] sm:grid-cols-[230px_minmax(0,1fr)] sm:items-center sm:gap-5"
     >
       <TrendingUp
         className="absolute -right-6 -top-7 size-28 text-white/[.07]"
@@ -153,28 +141,29 @@ function ConclusionPanel() {
           Conclusão executiva
         </span>
         <div className="mt-2 flex items-end gap-2">
-          <strong className="font-display text-[3.6rem] font-semibold leading-[.82] tracking-[-0.08em]">
-            <AnimatedNumber value={roiMetrics.total.coverage} suffix="%" />
+          <strong className="font-display text-[3.2rem] font-semibold leading-[.82] tracking-[-0.08em]">
+            <AnimatedNumber
+              value={roiMetrics.total.analysts}
+              decimals={1}
+              prefix="~"
+            />
           </strong>
-          <span className="pb-1 text-[10px] font-semibold text-white/65">
-            da capacidade
+          <span className="max-w-20 pb-0.5 text-[9px] font-semibold leading-3 text-white/70">
+            analistas equivalentes
           </span>
         </div>
       </div>
       <div className="relative mt-4 border-t border-white/15 pt-3 sm:mt-0 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">
         <p className="text-xs leading-5 text-white/82">
-          Julho equivale a{" "}
+          Em julho, os RPAs entregaram um volume de trabalho equivalente a{" "}
           <strong className="text-white">
             ~{formatDecimal(roiMetrics.total.analysts)} analistas
-          </strong>{" "}
-          — acima da capacidade assumida de {roiMetrics.capacity}.
+          </strong>
+          , considerando 140 horas úteis por mês.
         </p>
         <p className="mt-1.5 text-[9px] leading-4 text-white/58">
-          Até no cenário mais otimista do DCPOA, o total chega a{" "}
-          <strong className="text-white">
-            {formatDecimal(roiMetrics.total.conservativeAnalysts)} analistas
-          </strong>
-          .
+          Equivalência consolidada de DCPOA, CSN/CSI, Faturamento NF de
+          Exportação e Faturamento Couro Verde.
         </p>
       </div>
     </motion.section>
@@ -250,8 +239,10 @@ export default function RoiScene() {
         eyebrow="05 · Retorno comprovado"
         title={
           <>
-            ROI ganho. A automação já entrega{" "}
-            <span className="text-[#e83948]">mais que a capacidade.</span>
+            ROI ganho. Nossos RPAs entregam o equivalente a{" "}
+            <span className="text-[#e83948]">
+              ~{formatDecimal(roiMetrics.total.analysts)} analistas.
+            </span>
           </>
         }
         description="DCPOA + CSN/CSI + Faturamento NF de Exportação + Faturamento Couro Verde · fonte: logs de produção dos robôs · julho/2026"
@@ -277,7 +268,7 @@ export default function RoiScene() {
 
       <div className="grid gap-3 lg:grid-cols-[minmax(0,1.1fr)_minmax(400px,.9fr)] xl:grid-cols-[minmax(0,1.1fr)_minmax(520px,.9fr)]">
         <div className="grid content-start gap-3">
-          <CapacityChart />
+          <DeliveryChart />
           <ConclusionPanel />
         </div>
         <div className="grid content-start gap-3 sm:grid-cols-2">

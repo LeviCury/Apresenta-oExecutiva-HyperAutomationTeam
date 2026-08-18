@@ -1,10 +1,7 @@
 import { motion } from "motion/react";
 import {
-  Activity,
   BarChart3,
   Bot,
-  Clock3,
-  Cpu,
   TrendingUp,
 } from "lucide-react";
 import { operationKpis, topAutomations } from "../../deck-data";
@@ -148,34 +145,7 @@ export default function NumbersScene() {
           </>
         }
         description="Últimos 30 dias · atualização do dashboard às 17:38"
-        aside={
-          <Badge className="gap-2 py-2">
-            <span className="size-1.5 animate-pulse-soft rounded-full bg-[#5d86a5]" />
-            Operação agora
-          </Badge>
-        }
       />
-
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.08, duration: 0.45, ease: EASE }}
-        className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-2xl border border-[#2c5372]/[.08] bg-white/85 px-4 py-2.5 text-[11px] text-[#426a88] backdrop-blur-lg"
-        aria-label="Situação atual da operação"
-      >
-        <span className="flex items-center gap-2">
-          <Activity className="size-3.5 text-[#5d86a5]" />
-          <b className="text-[#2c5372]">Executando</b> 3
-        </span>
-        <span className="flex items-center gap-2">
-          <Clock3 className="size-3.5 text-[#5d86a5]" />
-          <b className="text-[#2c5372]">Na fila</b> 0
-        </span>
-        <span className="flex items-center gap-2">
-          <Cpu className="size-3.5 text-[#5d86a5]" />
-          <b className="text-[#2c5372]">Máquinas online</b> 3 de 3 · 3 ocupadas
-        </span>
-      </motion.div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {operationKpis.map((metric, index) => (

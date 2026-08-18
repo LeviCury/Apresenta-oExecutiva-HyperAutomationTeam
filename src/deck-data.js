@@ -161,7 +161,6 @@ export const timeline = [
 
 export const roiMetrics = {
   analystHours: 140,
-  capacity: 42,
   dcpoa: {
     title: "DCPOA",
     volume: "6.113 DCPOAs",
@@ -206,8 +205,6 @@ export const roiMetrics = {
   total: {
     hours: 6957.8,
     analysts: 49.7,
-    coverage: 118,
-    conservativeAnalysts: 46.3,
   },
 };
 
@@ -244,7 +241,7 @@ export const roiSummaryCards = [
     value: 49.7,
     decimals: 1,
     prefix: "~",
-    label: "Total necessário",
+    label: "Equivalência total dos RPAs",
     icon: BarChart3,
   },
 ];
