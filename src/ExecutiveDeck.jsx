@@ -16,6 +16,7 @@ import RoiScene from "./components/deck/RoiScene";
 import {
   EASE,
   LogoMark,
+  MinervaWordmark,
   slideVariants,
 } from "./components/deck/primitives";
 import { Button } from "./components/ui/button";
@@ -41,15 +42,15 @@ function OpeningCurtain({ visible }) {
     <AnimatePresence>
       {visible ? (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-[#172a39] text-white"
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-white text-[#2c5372]"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, scale: 1.02, filter: "blur(8px)" }}
           transition={{ duration: 0.56, ease: EASE }}
           aria-hidden="true"
         >
-          <div className="dark-grid absolute inset-0 opacity-55" />
+          <div className="deck-grid absolute inset-0 opacity-70" />
           <motion.div
-            className="absolute size-[28rem] rounded-full bg-[#00a896]/15 blur-[100px]"
+            className="absolute size-[28rem] rounded-full bg-[#eaeff5] blur-[90px]"
             initial={{ scale: 0.6, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.9, ease: EASE }}
@@ -59,15 +60,16 @@ function OpeningCurtain({ visible }) {
               initial={{ opacity: 0, y: 16, scale: 0.88 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 0.08, duration: 0.52, ease: EASE }}
-              className="mb-5 flex size-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[.06] shadow-[0_18px_60px_rgba(0,0,0,.2)]"
+              className="mb-4 flex size-20 items-center justify-center rounded-3xl border border-[#2c5372]/10 bg-white shadow-[0_18px_60px_rgba(44,83,114,.12)]"
             >
-              <LogoMark dark className="bg-transparent" />
+              <LogoMark className="h-12 w-16" />
             </motion.div>
+            <MinervaWordmark className="text-2xl" />
             <motion.span
               initial={{ opacity: 0, y: 12, filter: "blur(5px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
-              className="font-display text-2xl font-semibold tracking-[-0.04em]"
+              className="mt-5 font-display text-xl font-semibold tracking-[-0.04em] text-[#2c5372]"
             >
               Hiperautomação
             </motion.span>
@@ -75,7 +77,7 @@ function OpeningCurtain({ visible }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.36, duration: 0.42 }}
-              className="mt-2 text-[10px] font-bold uppercase tracking-[0.22em] text-white/38"
+              className="mt-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[#5d86a5]"
             >
               Apresentação à diretoria
             </motion.span>
@@ -83,7 +85,7 @@ function OpeningCurtain({ visible }) {
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ delay: 0.42, duration: 0.68, ease: EASE }}
-              className="mt-6 h-px w-44 origin-left bg-gradient-to-r from-transparent via-[#00d6c2] to-transparent"
+              className="mt-6 h-px w-44 origin-left bg-gradient-to-r from-transparent via-[#e83948] to-transparent"
             />
           </div>
         </motion.div>
@@ -200,41 +202,27 @@ export default function ExecutiveDeck() {
   }
 
   const progress = ((active + 1) / SLIDES.length) * 100;
-  const isRoi = active === SLIDES.length - 1;
-
   return (
     <div
-      className="executive-app relative h-screen overflow-hidden bg-[#f3ead7]"
+      className="executive-app relative h-screen overflow-hidden bg-white"
       ref={shellRef}
       onPointerMove={handlePointerMove}
     >
       <header
-        className={cn(
-          "deck-chrome relative z-30 flex h-[66px] items-center border-b px-4 transition-colors duration-500 sm:px-6 lg:px-8",
-          isRoi
-            ? "border-white/[.08] bg-[#0d1c27] text-white"
-            : "border-[#172a39]/[.08] bg-[#f8f3e9]/92 text-[#172a39] backdrop-blur-xl",
-        )}
+        className="deck-chrome relative z-30 flex h-[66px] items-center border-b border-[#2c5372]/[.08] bg-white/95 px-4 text-[#2c5372] backdrop-blur-xl sm:px-6 lg:px-8"
       >
         <div className="flex min-w-0 items-center gap-3">
-          <LogoMark dark={isRoi} />
+          <LogoMark />
           <div className="min-w-0">
-            <div className="truncate font-display text-sm font-semibold tracking-[-0.025em]">
-              Hiperautomação
-            </div>
-            <div
-              className={cn(
-                "hidden text-[8px] font-bold uppercase tracking-[0.16em] sm:block",
-                isRoi ? "text-white/32" : "text-[#71838e]",
-              )}
-            >
-              Apresentação à diretoria
+            <MinervaWordmark className="text-[13px]" />
+            <div className="hidden text-[8px] font-semibold uppercase tracking-[0.14em] text-[#5d86a5] sm:block">
+              Hiperautomação · diretoria
             </div>
           </div>
         </div>
 
         <nav
-          className="mx-auto hidden items-center gap-1 rounded-full border border-[#172a39]/[.08] bg-white/55 p-1 shadow-sm backdrop-blur-xl lg:flex"
+          className="mx-auto hidden items-center gap-1 rounded-full border border-[#2c5372]/[.08] bg-[#eaeff5]/45 p-1 shadow-sm backdrop-blur-xl lg:flex"
           aria-label="Seções"
         >
           {SLIDES.map((slide, index) => (
@@ -243,12 +231,8 @@ export default function ExecutiveDeck() {
               className={cn(
                 "relative rounded-full px-3.5 py-2 text-[10px] font-semibold transition-colors duration-300",
                 index === active
-                  ? isRoi
-                    ? "text-[#172a39]"
-                    : "text-white"
-                  : isRoi
-                    ? "text-white/42 hover:text-white/72"
-                    : "text-[#657985] hover:text-[#172a39]",
+                  ? "text-white"
+                  : "text-[#426a88] hover:text-[#2c5372]",
               )}
               onClick={() => goTo(index)}
               aria-current={index === active ? "page" : undefined}
@@ -256,10 +240,7 @@ export default function ExecutiveDeck() {
             >
               {index === active ? (
                 <motion.span
-                  className={cn(
-                    "absolute inset-0 rounded-full shadow-sm",
-                    isRoi ? "bg-[#00d6c2]" : "bg-[#172a39]",
-                  )}
+                  className="absolute inset-0 rounded-full bg-[#e83948] shadow-sm"
                   layoutId="active-slide-pill-tailwind"
                   transition={{ type: "spring", stiffness: 420, damping: 36 }}
                 />
@@ -270,18 +251,13 @@ export default function ExecutiveDeck() {
         </nav>
 
         <div className="ml-auto flex items-center gap-2 lg:ml-0">
-          <span
-            className={cn(
-              "hidden text-[9px] font-bold tabular-nums sm:block",
-              isRoi ? "text-white/32" : "text-[#80909a]",
-            )}
-          >
+          <span className="hidden text-[9px] font-bold tabular-nums text-[#5d86a5] sm:block">
             {String(active + 1).padStart(2, "0")} /{" "}
             {String(SLIDES.length).padStart(2, "0")}
           </span>
           <Button
             type="button"
-            variant={isRoi ? "darkGhost" : "ghost"}
+            variant="ghost"
             size="icon"
             onClick={toggleFullscreen}
             aria-label={
@@ -294,12 +270,7 @@ export default function ExecutiveDeck() {
 
         <div className="absolute inset-x-0 bottom-0 h-px overflow-hidden bg-black/[.04]">
           <motion.div
-            className={cn(
-              "h-full origin-left",
-              isRoi
-                ? "bg-gradient-to-r from-[#00a896] to-[#00d6c2]"
-                : "bg-gradient-to-r from-[#a5222f] via-[#00a896] to-[#d9a441]",
-            )}
+            className="h-full origin-left bg-gradient-to-r from-[#2c5372] via-[#e83948] to-[#c7b475]"
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.52, ease: EASE }}
           />
@@ -338,19 +309,9 @@ export default function ExecutiveDeck() {
       </main>
 
       <footer
-        className={cn(
-          "deck-chrome relative z-30 flex h-[52px] items-center justify-between border-t px-4 transition-colors duration-500 sm:px-6 lg:px-8",
-          isRoi
-            ? "border-white/[.08] bg-[#0d1c27] text-white"
-            : "border-[#172a39]/[.08] bg-[#f8f3e9] text-[#172a39]",
-        )}
+        className="deck-chrome relative z-30 flex h-[52px] items-center justify-between border-t border-[#2c5372]/[.08] bg-white px-4 text-[#2c5372] sm:px-6 lg:px-8"
       >
-        <span
-          className={cn(
-            "hidden text-[9px] font-medium sm:block",
-            isRoi ? "text-white/30" : "text-[#7b8b94]",
-          )}
-        >
+        <span className="hidden text-[9px] font-medium text-[#5d86a5] sm:block">
           Uso interno · CoE de Hiperautomação · Horizonte 12 meses
         </span>
 
@@ -361,30 +322,21 @@ export default function ExecutiveDeck() {
               className={cn(
                 "h-1 rounded-full transition-all",
                 index === active
-                  ? isRoi
-                    ? "w-6 bg-[#00d6c2]"
-                    : "w-6 bg-[#00a896]"
-                  : isRoi
-                    ? "w-1 bg-white/20"
-                    : "w-1 bg-[#172a39]/15",
+                  ? "w-6 bg-[#e83948]"
+                  : "w-1 bg-[#2c5372]/15",
               )}
             />
           ))}
         </div>
 
         <div className="ml-auto flex items-center gap-2">
-          <span
-            className={cn(
-              "mr-1 hidden items-center gap-1.5 text-[9px] md:flex",
-              isRoi ? "text-white/30" : "text-[#7b8b94]",
-            )}
-          >
+          <span className="mr-1 hidden items-center gap-1.5 text-[9px] text-[#5d86a5] md:flex">
             <Sparkles className="size-3" />
             ← → para navegar
           </span>
           <Button
             type="button"
-            variant={isRoi ? "darkGhost" : "ghost"}
+            variant="ghost"
             size="icon"
             className="size-8"
             onClick={() => goTo(active - 1)}
@@ -395,7 +347,7 @@ export default function ExecutiveDeck() {
           </Button>
           <Button
             type="button"
-            variant={isRoi ? "darkGhost" : "default"}
+            variant="default"
             size="icon"
             className="size-8"
             onClick={() => goTo(active + 1)}

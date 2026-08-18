@@ -3,6 +3,7 @@ import {
   BarChart3,
   CheckCircle2,
   Clock3,
+  Factory,
   FileCheck2,
   ReceiptText,
   ShieldCheck,
@@ -30,23 +31,30 @@ const evidence = [
   {
     ...roiMetrics.dcpoa,
     icon: FileCheck2,
-    accent: "teal",
+    accent: "red",
     answer: "~12 analistas · faixa de 8 a 15",
     details: "94% dos DCPOAs têm de 1 a 3 itens.",
   },
   {
     ...roiMetrics.certificates,
     icon: ShieldCheck,
-    accent: "gold",
+    accent: "sand",
     answer: "~34 analistas",
     details: "Contagem sem testes e sem retrabalhos duplicados.",
   },
   {
     ...roiMetrics.exportInvoice,
     icon: ReceiptText,
-    accent: "red",
+    accent: "redLight",
     answer: `~${formatDecimal(roiMetrics.exportInvoice.analysts)} analistas`,
     details: `${roiMetrics.exportInvoice.executions.toLocaleString("pt-BR")} × 20 min = ${roiMetrics.exportInvoice.hours.toLocaleString("pt-BR")} h manuais · runtime ${formatDecimal(roiMetrics.exportInvoice.runtimeHours)} h · redução ${formatDecimal(roiMetrics.exportInvoice.timeReduction)}%.`,
+  },
+  {
+    ...roiMetrics.greenLeather,
+    icon: Factory,
+    accent: "cream",
+    answer: `~${formatDecimal(roiMetrics.greenLeather.analysts)} analista`,
+    details: `${roiMetrics.greenLeather.executions.toLocaleString("pt-BR")} × 9 min = ${formatDecimal(roiMetrics.greenLeather.hours)} h manuais · runtime ${formatDecimal(roiMetrics.greenLeather.runtimeHours)} h · redução ${formatDecimal(roiMetrics.greenLeather.timeReduction)}%.`,
   },
 ];
 
@@ -59,46 +67,46 @@ function CapacityChart() {
       initial={{ opacity: 0, y: 22 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.55, ease: EASE }}
-      className="rounded-[1.75rem] border border-white/10 bg-white/[.055] p-4 shadow-[0_24px_70px_rgba(0,0,0,.18)] backdrop-blur-xl lg:p-5"
+      className="rounded-[1.75rem] border border-[#2c5372]/10 bg-white/95 p-4 shadow-[0_24px_70px_rgba(44,83,114,.1)] backdrop-blur-xl lg:p-5"
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <SectionLabel dark>Capacidade equivalente</SectionLabel>
-          <h3 className="font-display text-lg font-semibold tracking-[-0.04em] text-white">
+          <SectionLabel>Capacidade equivalente</SectionLabel>
+          <h3 className="font-display text-lg font-semibold tracking-[-0.04em] text-[#2c5372]">
             Trabalho dos robôs vs. capacidade de 42 analistas
           </h3>
-          <p className="mt-1 max-w-[680px] text-[10px] leading-4 text-white/45">
+          <p className="mt-1 max-w-[680px] text-[10px] leading-4 text-[#426a88]">
             Barra = trabalho executado pelos robôs em julho, convertido em
             analistas (140 h/mês). A linha marca a capacidade assumida de 42
             analistas.
           </p>
         </div>
-        <Badge variant="dark" className="shrink-0">
+        <Badge variant="cream" className="shrink-0">
           Julho · 2026
         </Badge>
       </div>
 
       <div className="mt-5">
-        <div className="mb-2 flex justify-between text-[9px] font-semibold text-white/30">
+        <div className="mb-2 flex justify-between text-[9px] font-semibold text-[#5d86a5]">
           {[0, 20, 40, 60].map((tick) => (
             <span key={tick}>{tick}</span>
           ))}
         </div>
         <div
-          className="relative h-16 overflow-visible rounded-2xl border border-white/[.08] bg-black/15"
+          className="relative h-16 overflow-visible rounded-2xl border border-[#2c5372]/[.08] bg-[#eaeff5]/60"
           role="img"
           aria-label={`O trabalho dos robôs equivale a ${formatDecimal(roiMetrics.total.analysts)} analistas, acima da capacidade assumida de ${roiMetrics.capacity} analistas.`}
         >
           {[33.333, 66.666].map((position) => (
             <span
               key={position}
-              className="absolute inset-y-0 w-px bg-white/[.06]"
+              className="absolute inset-y-0 w-px bg-[#2c5372]/[.07]"
               style={{ left: `${position}%` }}
               aria-hidden="true"
             />
           ))}
           <motion.div
-            className="roi-bar-pattern absolute inset-y-2 left-2 origin-left rounded-xl bg-gradient-to-r from-[#008d80] via-[#00a896] to-[#00d6c2] shadow-[0_0_45px_rgba(0,214,194,.23)]"
+            className="roi-bar-pattern absolute inset-y-2 left-2 origin-left rounded-xl bg-gradient-to-r from-[#bf404f] via-[#e83948] to-[#eb7380] shadow-[0_0_45px_rgba(232,57,72,.24)]"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ delay: 0.45, duration: 1.05, ease: EASE }}
@@ -109,18 +117,18 @@ function CapacityChart() {
             </span>
           </motion.div>
           <motion.div
-            className="absolute -inset-y-2 w-px bg-[#f2c56c] shadow-[0_0_18px_rgba(242,197,108,.5)]"
+            className="absolute -inset-y-2 w-px bg-[#c7b475] shadow-[0_0_18px_rgba(199,180,117,.5)]"
             initial={{ opacity: 0, scaleY: 0 }}
             animate={{ opacity: 1, scaleY: 1 }}
             transition={{ delay: 1.05, duration: 0.42, ease: EASE }}
             style={{ left: `${markerPosition}%` }}
           >
-            <span className="absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#f2c56c]/25 bg-[#2c2a23] px-2 py-1 text-[9px] font-bold text-[#f2c56c]">
+            <span className="absolute -top-5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#c7b475]/30 bg-[#2c5372] px-2 py-1 text-[9px] font-bold text-[#c7b475]">
               42 analistas
             </span>
           </motion.div>
         </div>
-        <div className="mt-2 flex justify-end text-[9px] font-semibold uppercase tracking-[0.12em] text-white/28">
+        <div className="mt-2 flex justify-end text-[9px] font-semibold uppercase tracking-[0.12em] text-[#5d86a5]">
           Analistas equivalentes
         </div>
       </div>
@@ -134,7 +142,7 @@ function ConclusionPanel() {
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.4, duration: 0.5, ease: EASE }}
-      className="relative grid overflow-hidden rounded-[1.65rem] border border-[#00d6c2]/20 bg-[#00a896] p-4 text-white shadow-[0_22px_65px_rgba(0,168,150,.18)] sm:grid-cols-[190px_minmax(0,1fr)] sm:items-center sm:gap-5"
+      className="relative grid overflow-hidden rounded-[1.65rem] border border-[#eb7380]/25 bg-[#e83948] p-4 text-white shadow-[0_22px_65px_rgba(232,57,72,.2)] sm:grid-cols-[190px_minmax(0,1fr)] sm:items-center sm:gap-5"
     >
       <TrendingUp
         className="absolute -right-6 -top-7 size-28 text-white/[.07]"
@@ -181,53 +189,54 @@ function EvidenceCard({ item, index }) {
       initial={{ opacity: 0, x: 18 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.44 + index * 0.06, duration: 0.5, ease: EASE }}
-      className="relative overflow-hidden rounded-[1.35rem] border border-white/[.09] bg-white/[.045] p-3.5 backdrop-blur-xl"
+      className="relative overflow-hidden rounded-[1.35rem] border border-[#2c5372]/[.09] bg-white/95 p-3.5 shadow-[0_14px_38px_rgba(44,83,114,.06)] backdrop-blur-xl"
     >
       <div
         className={cn(
           "absolute inset-y-0 left-0 w-0.5",
-          item.accent === "teal" && "bg-[#00d6c2]",
-          item.accent === "gold" && "bg-[#d9a441]",
-          item.accent === "red" && "bg-[#d94b57]",
+          item.accent === "red" && "bg-[#e83948]",
+          item.accent === "sand" && "bg-[#c7b475]",
+          item.accent === "redLight" && "bg-[#eb7380]",
+          item.accent === "cream" && "bg-[#5d86a5]",
         )}
       />
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <span className="text-[8px] font-bold uppercase tracking-[0.14em] text-white/32">
+          <span className="text-[8px] font-bold uppercase tracking-[0.14em] text-[#5d86a5]">
             Evidência {String(index + 1).padStart(2, "0")}
           </span>
-          <h3 className="mt-0.5 truncate font-display text-sm font-semibold tracking-[-0.03em] text-white">
+          <h3 className="mt-0.5 font-display text-sm font-semibold leading-4 tracking-[-0.03em] text-[#2c5372]">
             {item.title}
           </h3>
         </div>
-        <div className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] text-[#68ded0]">
-          <Icon className="size-3.5" strokeWidth={1.8} />
+        <div className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-[#2c5372]/10 bg-[#eaeff5] text-[#e83948]">
+          <Icon className="size-3.5" strokeWidth={1.7} />
         </div>
       </div>
 
       <div className="mt-2.5 grid grid-cols-[minmax(0,1.55fr)_.7fr_.7fr] gap-2">
-        <div className="min-w-0 rounded-xl bg-black/10 px-2.5 py-2">
-          <strong className="font-display block truncate text-sm tracking-[-0.03em] text-white">
+        <div className="min-w-0 rounded-xl bg-[#eaeff5]/65 px-2.5 py-2">
+          <strong className="font-display block truncate text-sm tracking-[-0.03em] text-[#2c5372]">
             {item.volume}
           </strong>
-          <span className="block truncate text-[8px] text-white/30">
+          <span className="block truncate text-[8px] text-[#5d86a5]">
             {item.complement}
           </span>
         </div>
-        <div className="rounded-xl bg-black/10 px-2.5 py-2">
-          <Clock3 className="mb-0.5 size-2.5 text-white/30" />
-          <strong className="font-display block text-xs text-white">
+        <div className="rounded-xl bg-[#eaeff5]/65 px-2.5 py-2">
+          <Clock3 className="mb-0.5 size-2.5 text-[#5d86a5]" />
+          <strong className="font-display block text-xs text-[#2c5372]">
             {item.hours.toLocaleString("pt-BR")} h
           </strong>
         </div>
-        <div className="rounded-xl bg-black/10 px-2.5 py-2">
-          <CheckCircle2 className="mb-0.5 size-2.5 text-[#66ddcf]" />
-          <strong className="font-display block text-xs text-white">
+        <div className="rounded-xl bg-[#eaeff5]/65 px-2.5 py-2">
+          <CheckCircle2 className="mb-0.5 size-2.5 text-[#426a88]" />
+          <strong className="font-display block text-xs text-[#2c5372]">
             {item.analysts.toLocaleString("pt-BR")} FTE
           </strong>
         </div>
       </div>
-      <p className="mt-2 truncate text-[8px] leading-3 text-white/32">
+      <p className="mt-2 text-[8px] leading-3 text-[#5d86a5]">
         {item.premise} · {item.details}
       </p>
     </motion.article>
@@ -236,43 +245,42 @@ function EvidenceCard({ item, index }) {
 
 export default function RoiScene() {
   return (
-    <Scene dark contentClassName="gap-4">
+    <Scene contentClassName="gap-4">
       <SceneHeading
-        dark
         eyebrow="05 · Retorno comprovado"
         title={
           <>
             ROI ganho. A automação já entrega{" "}
-            <span className="text-[#00d6c2]">mais que a capacidade.</span>
+            <span className="text-[#e83948]">mais que a capacidade.</span>
           </>
         }
-        description="DCPOA + CSN/CSI + Faturamento de Nota Fiscal de Exportação · fonte: logs de produção dos robôs · julho/2026"
+        description="DCPOA + CSN/CSI + Faturamento NF de Exportação + Faturamento Couro Verde · fonte: logs de produção dos robôs · julho/2026"
         aside={
-          <div className="flex items-center gap-3 rounded-full border border-white/10 bg-white/[.05] px-4 py-2.5 text-xs font-semibold text-white/60 backdrop-blur-md">
-            <BarChart3 className="size-4 text-[#00d6c2]" />
+          <div className="flex items-center gap-3 rounded-full border border-[#2c5372]/10 bg-white/85 px-4 py-2.5 text-xs font-semibold text-[#426a88] backdrop-blur-md">
+            <BarChart3 className="size-4 text-[#e83948]" strokeWidth={1.7} />
             1 analista = 140 h úteis/mês
           </div>
         }
       />
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {roiSummaryCards.map((metric, index) => (
           <MetricCard
             key={metric.label}
             {...metric}
-            dark
+            tone="brand"
             delay={0.1 + index * 0.055}
             className="min-h-[96px] p-4"
           />
         ))}
       </div>
 
-      <div className="grid gap-3 xl:grid-cols-[minmax(0,1.35fr)_430px]">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1.1fr)_minmax(400px,.9fr)] xl:grid-cols-[minmax(0,1.1fr)_minmax(520px,.9fr)]">
         <div className="grid content-start gap-3">
           <CapacityChart />
           <ConclusionPanel />
         </div>
-        <div className="grid content-start gap-3">
+        <div className="grid content-start gap-3 sm:grid-cols-2">
           {evidence.map((item, index) => (
             <EvidenceCard item={item} index={index} key={item.title} />
           ))}
@@ -283,15 +291,15 @@ export default function RoiScene() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.72, duration: 0.45 }}
-        className="flex flex-col gap-2 border-t border-white/[.08] pt-3 text-[9px] leading-4 text-white/28 sm:flex-row sm:items-center sm:justify-between"
+        className="flex flex-col gap-2 border-t border-[#2c5372]/[.08] pt-3 text-[9px] leading-4 text-[#5d86a5] sm:flex-row sm:items-center sm:justify-between"
       >
         <span>
-          Base consolidada de julho/2026 · DCPOA por execução real · CSN/CSI por
-          certificado emitido, sem testes e duplicados.
+          Base consolidada de julho/2026 · DCPOA por execução real · CSN/CSI
+          sem testes e duplicados.
         </span>
         <span>
-          Faturamento de Exportação: registros enviados de 01/07 a 30/07 ·
-          somente num_status = 1 · 20 min/linha.
+          Exportação: num_status = 1 · 20 min/linha. Couro Verde: status Jira 4
+          + status RPA 12 · 272 de 296 · 9 min/execução.
         </span>
       </motion.footer>
     </Scene>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { Badge } from "../ui/badge";
 import { MotionCard } from "../ui/card";
@@ -32,17 +32,35 @@ export const slideVariants = {
 
 export function LogoMark({ dark = false, className }) {
   return (
-    <span
-      className={cn(
-        "brand-bars flex h-7 items-end gap-[3px] rounded-lg p-1",
-        dark ? "bg-white/[.08]" : "bg-[#172a39]/[.06]",
-        className,
-      )}
+    <svg
+      viewBox="0 0 86 64"
+      className={cn("h-8 w-11 shrink-0", className)}
       aria-hidden="true"
     >
-      <span />
-      <span />
-      <span />
+      <path fill={dark ? "#5d86a5" : "#2c5372"} d="M0 14h14v50H0z" />
+      <path
+        fill="#c7b475"
+        d="M14 64V29C14 12 23 5 35 5s22 7 22 24v35H43V30c0-8-3-13-8-13s-8 5-8 13v34H14z"
+      />
+      <path
+        fill="#e83948"
+        d="M43 64V29C43 12 52 5 64 5s22 7 22 24v35H72V30c0-8-3-13-8-13s-8 5-8 13v34H43z"
+      />
+    </svg>
+  );
+}
+
+export function MinervaWordmark({ className }) {
+  return (
+    <span
+      className={cn(
+        "flex items-baseline gap-1 font-display text-sm font-extrabold leading-none tracking-[-0.055em]",
+        className,
+      )}
+      aria-label="Minerva Foods"
+    >
+      <span className="text-[#2c5372]">minerva</span>
+      <span className="text-[#e83948]">foods</span>
     </span>
   );
 }
@@ -117,7 +135,7 @@ export function SceneHeading({
         <h1
           className={cn(
             "font-display text-[clamp(2rem,3.3vw,4.15rem)] font-semibold leading-[.98] tracking-[-0.065em]",
-            dark ? "text-white" : "text-[#172a39]",
+            dark ? "text-white" : "text-[#2c5372]",
           )}
         >
           {title}
@@ -126,7 +144,7 @@ export function SceneHeading({
           <p
             className={cn(
               "mt-3 max-w-[850px] text-[clamp(.88rem,1.1vw,1.1rem)] leading-7",
-              dark ? "text-white/58" : "text-[#5d7180]",
+              dark ? "text-white/58" : "text-[#426a88]",
             )}
           >
             {description}
@@ -144,11 +162,78 @@ export function Scene({
   className,
   contentClassName,
 }) {
+  const viewportRef = useRef(null);
+  const contentRef = useRef(null);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const viewport = viewportRef.current;
+    const content = contentRef.current;
+    if (!viewport || !content) return undefined;
+
+    let frame;
+    const measure = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const availableWidth = viewport.clientWidth;
+        const availableHeight = viewport.clientHeight;
+        const previousStyles = {
+          left: content.style.left,
+          width: content.style.width,
+          maxWidth: content.style.maxWidth,
+          transform: content.style.transform,
+        };
+
+        content.style.left = "0";
+        content.style.width = "100%";
+        content.style.maxWidth = "1580px";
+        content.style.transform = "none";
+
+        const contentWidth = content.scrollWidth;
+        const contentHeight = content.scrollHeight;
+
+        content.style.left = previousStyles.left;
+        content.style.width = previousStyles.width;
+        content.style.maxWidth = previousStyles.maxWidth;
+        content.style.transform = previousStyles.transform;
+
+        if (!availableWidth || !availableHeight || !contentWidth || !contentHeight) {
+          return;
+        }
+
+        const targetScale = Math.min(
+          1,
+          (availableWidth - 2) / contentWidth,
+          (availableHeight - 2) / contentHeight,
+        );
+
+        setScale((current) =>
+          Math.abs(current - targetScale) < 0.002 ? current : targetScale,
+        );
+      });
+    };
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    window.addEventListener("resize", measure);
+    window.addEventListener("load", measure);
+    document.fonts?.ready.then(measure);
+    measure();
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("load", measure);
+    };
+  }, []);
+
   return (
     <div
+      ref={viewportRef}
       className={cn(
-        "slide-scroll relative h-full overflow-y-auto overflow-x-hidden",
-        dark ? "bg-[#0d1c27] text-white" : "bg-[#f8f3e9] text-[#172a39]",
+        "slide-scroll relative h-full overflow-hidden",
+        dark ? "bg-[#2c5372] text-white" : "bg-white text-[#2c5372]",
         className,
       )}
     >
@@ -166,20 +251,30 @@ export function Scene({
       <div
         className={cn(
           "pointer-events-none absolute -right-40 -top-44 size-[34rem] rounded-full blur-[110px]",
-          dark ? "bg-[#00a896]/12" : "bg-[#00a896]/10",
+          dark ? "bg-[#e83948]/12" : "bg-[#e83948]/[.07]",
         )}
         aria-hidden="true"
       />
       <div
         className={cn(
           "pointer-events-none absolute -bottom-64 -left-48 size-[38rem] rounded-full blur-[130px]",
-          dark ? "bg-[#a5222f]/12" : "bg-[#a5222f]/[.07]",
+          dark ? "bg-[#5d86a5]/18" : "bg-[#eaeff5]/80",
         )}
         aria-hidden="true"
       />
       <div
+        ref={contentRef}
+        style={{
+          left: `${(100 - 100 / scale) / 2}%`,
+          width: `${100 / scale}%`,
+          maxWidth: scale < 0.999 ? "none" : undefined,
+          marginLeft: scale < 0.999 ? "0" : undefined,
+          marginRight: scale < 0.999 ? "0" : undefined,
+          transform: `scale(${scale})`,
+          transformOrigin: "top center",
+        }}
         className={cn(
-          "compact-on-short relative mx-auto flex min-h-full w-full max-w-[1580px] flex-col px-5 py-5 sm:px-8 sm:py-7 lg:px-12 lg:py-8 2xl:px-16",
+          "scene-fit-content relative mx-auto flex min-h-full w-full max-w-[1580px] flex-col px-5 py-5 sm:px-8 sm:py-7 lg:px-12 lg:py-8 2xl:px-16",
           contentClassName,
         )}
       >
@@ -214,33 +309,37 @@ export function MetricCard({
           "border-white/10 bg-white/[.055] text-white shadow-[0_22px_60px_rgba(0,0,0,.18)]",
         tone === "negative" &&
           (dark
-            ? "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-[#e95a65]"
-            : "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-[#a5222f]"),
-        tone !== "negative" &&
+            ? "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-[#eb7380]"
+            : "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-[#e83948]"),
+        tone === "brand" &&
           (dark
-            ? "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-[#00d6c2]"
-            : "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-[#00a896]"),
+            ? "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-[#eb7380]"
+            : "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-[#e83948]"),
+        tone === "positive" &&
+          (dark
+            ? "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-[#5d86a5]"
+            : "after:absolute after:inset-x-0 after:top-0 after:h-0.5 after:bg-[#426a88]"),
         className,
       )}
     >
       <div
         className={cn(
           "mb-3 flex items-center justify-between",
-          dark ? "text-white/50" : "text-[#6d7f8b]",
+          dark ? "text-white/50" : "text-[#5d86a5]",
         )}
       >
         {Icon ? <Icon className="size-4" strokeWidth={1.8} /> : <span />}
         <span
           className={cn(
             "size-1.5 animate-pulse-soft rounded-full",
-            tone === "negative" ? "bg-[#d94b57]" : "bg-[#00a896]",
+            tone === "positive" ? "bg-[#5d86a5]" : "bg-[#e83948]",
           )}
         />
       </div>
       <strong
         className={cn(
           "font-display block text-[clamp(1.8rem,2.4vw,2.7rem)] font-semibold leading-none tracking-[-0.06em]",
-          dark ? "text-white" : "text-[#172a39]",
+          dark ? "text-white" : "text-[#2c5372]",
         )}
       >
         <AnimatedNumber
@@ -254,7 +353,7 @@ export function MetricCard({
         <span
           className={cn(
             "text-xs font-semibold",
-            dark ? "text-white/58" : "text-[#526875]",
+            dark ? "text-white/58" : "text-[#426a88]",
           )}
         >
           {label}
@@ -264,10 +363,10 @@ export function MetricCard({
             className={cn(
               "whitespace-nowrap text-[10px] font-bold",
               tone === "negative"
-                ? "text-[#d94b57]"
+                ? "text-[#e83948]"
                 : dark
-                  ? "text-[#6be5d6]"
-                  : "text-[#16806f]",
+                  ? "text-[#eaeff5]"
+                  : "text-[#426a88]",
             )}
           >
             {delta}
@@ -283,14 +382,14 @@ export function SectionLabel({ children, dark = false, className }) {
     <div
       className={cn(
         "mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em]",
-        dark ? "text-white/42" : "text-[#71838e]",
+        dark ? "text-white/50" : "text-[#5d86a5]",
         className,
       )}
     >
       <span
         className={cn(
           "h-px w-6",
-          dark ? "bg-[#00d6c2]/55" : "bg-[#00a896]/55",
+          dark ? "bg-[#eb7380]/70" : "bg-[#e83948]/65",
         )}
       />
       {children}

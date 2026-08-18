@@ -1,6 +1,7 @@
 import {
   BarChart3,
   Code2,
+  Factory,
   Gauge,
   Target,
   Users,
@@ -189,11 +190,24 @@ export const roiMetrics = {
     timeReduction: 64.1,
     premise: "20 min de trabalho manual por linha",
   },
+  greenLeather: {
+    title: "Faturamento Couro Verde",
+    executions: 272,
+    records: 296,
+    volume: "272 concluídas",
+    complement: "296 registros · status 4/12 · 91,9%",
+    hours: 40.8,
+    analysts: 0.3,
+    runtimeHours: 31.3,
+    savedHours: 9.5,
+    timeReduction: 23.3,
+    premise: "9 min de trabalho manual por execução concluída",
+  },
   total: {
-    hours: 6917,
-    analysts: 49.4,
+    hours: 6957.8,
+    analysts: 49.7,
     coverage: 118,
-    conservativeAnalysts: 46,
+    conservativeAnalysts: 46.3,
   },
 };
 
@@ -220,7 +234,14 @@ export const roiSummaryCards = [
     icon: Workflow,
   },
   {
-    value: 49.4,
+    value: 0.3,
+    decimals: 1,
+    prefix: "~",
+    label: "Analista p/ Couro Verde",
+    icon: Factory,
+  },
+  {
+    value: 49.7,
     decimals: 1,
     prefix: "~",
     label: "Total necessário",

@@ -6,7 +6,7 @@ function Card({ className, ...props }) {
     <div
       data-slot="card"
       className={cn(
-        "rounded-[1.75rem] border border-[#172a39]/[.09] bg-white/80 text-[#172a39] shadow-[0_22px_60px_rgba(23,42,57,.09)] backdrop-blur-xl",
+        "rounded-[1.75rem] border border-[#2c5372]/[.09] bg-white/90 text-[#2c5372] shadow-[0_22px_60px_rgba(44,83,114,.09)] backdrop-blur-xl",
         className,
       )}
       {...props}
@@ -21,9 +21,9 @@ function MotionCard({ className, glow = true, ...props }) {
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 280, damping: 24 }}
       className={cn(
-        "group relative overflow-hidden rounded-[1.75rem] border border-[#172a39]/[.09] bg-white/80 text-[#172a39] shadow-[0_22px_60px_rgba(23,42,57,.09)] backdrop-blur-xl",
+        "group relative overflow-hidden rounded-[1.75rem] border border-[#2c5372]/[.09] bg-white/90 text-[#2c5372] shadow-[0_22px_60px_rgba(44,83,114,.09)] backdrop-blur-xl",
         glow &&
-          "before:pointer-events-none before:absolute before:-right-16 before:-top-16 before:size-40 before:rounded-full before:bg-[#00a896]/10 before:blur-3xl before:transition-transform before:duration-700 group-hover:before:scale-125",
+          "before:pointer-events-none before:absolute before:-right-16 before:-top-16 before:size-40 before:rounded-full before:bg-[#e83948]/[.08] before:blur-3xl before:transition-transform before:duration-700 group-hover:before:scale-125",
         className,
       )}
       {...props}
@@ -55,7 +55,7 @@ function CardDescription({ className, ...props }) {
   return (
     <p
       data-slot="card-description"
-      className={cn("text-sm leading-6 text-[#5d7180]", className)}
+      className={cn("text-sm leading-6 text-[#426a88]", className)}
       {...props}
     />
   );

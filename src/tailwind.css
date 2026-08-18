@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Manrope", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
 
-  --color-minerva-ink: #172a39;
-  --color-minerva-ink-soft: #203c50;
-  --color-minerva-teal: #00a896;
-  --color-minerva-teal-bright: #00d6c2;
-  --color-minerva-red: #a5222f;
-  --color-minerva-cream: #f3ead7;
-  --color-minerva-paper: #fbf8f1;
-  --color-minerva-gold: #d9a441;
+  --color-minerva-blue: #2c5372;
+  --color-minerva-blue-medium: #426a88;
+  --color-minerva-blue-light: #5d86a5;
+  --color-minerva-red: #e83948;
+  --color-minerva-red-medium: #bf404f;
+  --color-minerva-red-light: #eb7380;
+  --color-minerva-gold: #c7b475;
+  --color-minerva-neutral: #eaeff5;
+  --color-minerva-white: #ffffff;
 
   --animate-float-slow: float-slow 10s ease-in-out infinite;
   --animate-pulse-soft: pulse-soft 2.8s ease-in-out infinite;
@@ -53,9 +54,9 @@
 }
 
 :root {
-  color: #172a39;
-  background: #f3ead7;
-  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  color: #2c5372;
+  background: #ffffff;
+  font-family: "Montserrat", ui-sans-serif, system-ui, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -87,7 +88,7 @@ a {
 
 ::selection {
   color: white;
-  background: #00a896;
+  background: #e83948;
 }
 
 .executive-app {
@@ -103,7 +104,7 @@ a {
   background:
     radial-gradient(
       650px circle at var(--pointer-x) var(--pointer-y),
-      rgba(0, 168, 150, 0.08),
+      rgba(232, 57, 72, 0.07),
       transparent 62%
     ),
     linear-gradient(120deg, rgba(255, 255, 255, 0.34), transparent 40%);
@@ -111,8 +112,8 @@ a {
 
 .deck-grid {
   background-image:
-    linear-gradient(rgba(23, 42, 57, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(23, 42, 57, 0.035) 1px, transparent 1px);
+    linear-gradient(rgba(44, 83, 114, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(44, 83, 114, 0.03) 1px, transparent 1px);
   background-size: 46px 46px;
   mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
 }
@@ -131,50 +132,22 @@ a {
 }
 
 .slide-scroll {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(23, 42, 57, 0.18) transparent;
+  scrollbar-width: none;
 }
 
 .slide-scroll::-webkit-scrollbar {
-  width: 6px;
-}
-
-.slide-scroll::-webkit-scrollbar-thumb {
-  border-radius: 999px;
-  background: rgba(23, 42, 57, 0.16);
-}
-
-.brand-bars > span {
-  display: block;
-  width: 5px;
-  border-radius: 999px;
-  transform-origin: bottom;
-}
-
-.brand-bars > span:nth-child(1) {
-  height: 13px;
-  background: #a5222f;
-}
-
-.brand-bars > span:nth-child(2) {
-  height: 20px;
-  background: #00a896;
-}
-
-.brand-bars > span:nth-child(3) {
-  height: 9px;
-  background: #d9a441;
+  display: none;
 }
 
 .minerva-orbit {
   background:
-    radial-gradient(circle at center, rgba(0, 214, 194, 0.24), transparent 36%),
+    radial-gradient(circle at center, rgba(235, 115, 128, 0.22), transparent 36%),
     conic-gradient(
       from 0deg,
-      rgba(0, 214, 194, 0),
-      rgba(0, 214, 194, 0.78),
-      rgba(217, 164, 65, 0.15),
-      rgba(0, 214, 194, 0)
+      rgba(235, 115, 128, 0),
+      rgba(235, 115, 128, 0.76),
+      rgba(199, 180, 117, 0.22),
+      rgba(235, 115, 128, 0)
     );
   mask-image: radial-gradient(circle, transparent 59%, black 60%, black 62%, transparent 63%);
 }
@@ -186,7 +159,7 @@ a {
   left: 5%;
   height: 1px;
   content: "";
-  background: linear-gradient(90deg, transparent, rgba(0, 168, 150, 0.38), transparent);
+  background: linear-gradient(90deg, transparent, rgba(232, 57, 72, 0.42), transparent);
 }
 
 .trend-line {
@@ -213,10 +186,14 @@ a {
   content: "";
   background: linear-gradient(
     90deg,
-    rgba(0, 168, 150, 0.1),
-    rgba(0, 168, 150, 0.55),
-    rgba(217, 164, 65, 0.45)
+    rgba(232, 57, 72, 0.1),
+    rgba(232, 57, 72, 0.58),
+    rgba(199, 180, 117, 0.5)
   );
+}
+
+.scene-fit-content {
+  will-change: transform;
 }
 
 .stage-surface {
@@ -232,13 +209,6 @@ a {
   .timeline-line::before,
   .process-rail::before {
     display: none;
-  }
-}
-
-@media (max-height: 760px) and (min-width: 1024px) {
-  .compact-on-short {
-    transform: scale(0.92);
-    transform-origin: top center;
   }
 }
 
